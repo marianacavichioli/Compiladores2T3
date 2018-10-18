@@ -1,0 +1,8 @@
+Linha 5: identificador numerador ja declarado anteriormente
+Linha 5: identificador denominador ja declarado anteriormente
+Linha 8: identificador racional nao declarado
+Linha 8: tipo tRacional nao declarado
+Linha 22: identificador racional nao declarado
+Linha 23: identificador racional nao declarado
+Linha 28: tipo tRacional nao declarado
+Fim da compilacao

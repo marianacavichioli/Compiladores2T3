@@ -1,0 +1,32 @@
+Linha 6: identificador nome ja declarado anteriormente
+Linha 7: identificador nomeFabricante ja declarado anteriormente
+Linha 8: identificador nomeDistribuidor ja declarado anteriormente
+Linha 9: identificador tipoVinho ja declarado anteriormente
+Linha 10: identificador anoSafra ja declarado anteriormente
+Linha 11: identificador anoEnvasamento ja declarado anteriormente
+Linha 12: identificador preco ja declarado anteriormente
+Linha 13: identificador unidades ja declarado anteriormente
+Linha 16: identificador vinho nao declarado
+Linha 16: tipo tVinho nao declarado
+Linha 20: identificador vinho nao declarado
+Linha 22: identificador vinho nao declarado
+Linha 24: identificador vinho nao declarado
+Linha 26: identificador vinho nao declarado
+Linha 28: identificador vinho nao declarado
+Linha 30: identificador vinho nao declarado
+Linha 32: identificador vinho nao declarado
+Linha 34: identificador vinho nao declarado
+Linha 38: identificador vinho nao declarado
+Linha 38: tipo tVinho nao declarado
+Linha 52: identificador vinho nao declarado
+Linha 52: tipo tVinho nao declarado
+Linha 65: tipo tVinho nao declarado
+Erro semantico: leiaVinhoFun?ao inexistente
+Erro semantico: leiaVinhoFun?ao inexistente
+Erro semantico: escrevaVinhoFun?ao inexistente
+Erro semantico: escrevaVinhoFun?ao inexistente
+Erro semantico: escrevaVinhoFun?ao inexistente
+Erro semantico: escrevaVinhoFun?ao inexistente
+Erro semantico: escrevaVinhoFun?ao inexistente
+Erro semantico: escrevaVinhoFun?ao inexistente
+Fim da compilacao

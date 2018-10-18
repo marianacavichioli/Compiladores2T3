@@ -1,0 +1,6 @@
+Linha 5: identificador nome ja declarado anteriormente
+Linha 6: identificador tipoVinho ja declarado anteriormente
+Linha 7: identificador preco ja declarado anteriormente
+Linha 10: identificador tVinho ja declarado anteriormente
+Linha 10: tipo tVinho nao declarado
+Fim da compilacao
