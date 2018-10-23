@@ -7,7 +7,7 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 public class Compilador {
 
-    private final static String CAMINHO_CASOS_TESTE = "/Users/Macbook/IdeaProjects/Compiladores2-T1/casosDeTesteT1/1.arquivos_com_erros_sintaticos";
+    private final static String CAMINHO_CASOS_TESTE = "/Users/Macbook/IdeaProjects/Compiladores2T3/casosDeTesteT3/exemplo_simples_correto";
 
     public static void main(String[] args) throws IOException, RecognitionException {
 
@@ -24,28 +24,28 @@ public class Compilador {
 
          CharStream input = CharStreams.fromFileName(args[0]);
 
-            LALexer lexer = new LALexer(input);
+            hortLexer lexer = new hortLexer(input);
 
             CommonTokenStream tokens = new CommonTokenStream(lexer);
-            LAParser parser = new LAParser(tokens);
+            hortParser parser = new hortParser(tokens);
           //  parser.removeErrorListeners();
             parser.addErrorListener(new ErrorListener(out));
-            LAParser.ProgramaContext arvore = parser.programa();
+            hortParser.HortaContext arvore = parser.horta();
 
 
             if(!out.isModificado()){
                 Visitor v = new Visitor();   //leo colocou isso agora mas n funcionou parece
                 v.setTokenStream(tokens);
-                v.visitPrograma(arvore);
+               // v.visitPrograma(arvore);
                 if(!out.isModificado()) {
 
                     //Executa gerador de código
-                    GeradorDeCodigo gc = new GeradorDeCodigo();
-                    ParseTreeWalker.DEFAULT.walk(gc, arvore);
-                    out.println(gc.getString());
-                    try(PrintWriter pw = new PrintWriter(new FileWriter(args[1]))) {
-                        pw.print(out);
-                    }
+                    //GeradorDeCodigo gc = new GeradorDeCodigo();
+//                    ParseTreeWalker.DEFAULT.walk(gc, arvore);
+//                    out.println(gc.getString());
+//                    try(PrintWriter pw = new PrintWriter(new FileWriter(args[1]))) {
+//                        pw.print(out);
+//                    }
                 }
                 else{
                     try(PrintWriter pw = new PrintWriter(new FileWriter(args[1]))) {
