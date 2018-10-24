@@ -36,7 +36,7 @@ public class Compilador {
             if(!out.isModificado()){
                 Visitor v = new Visitor();   //leo colocou isso agora mas n funcionou parece
                 v.setTokenStream(tokens);
-               // v.visitPrograma(arvore);
+                v.visitHorta(arvore);
                 if(!out.isModificado()) {
 
                     //Executa gerador de código

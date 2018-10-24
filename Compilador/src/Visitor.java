@@ -1,8 +1,6 @@
 // TODO: Se o n = 0 é pq na hora de regar/capinar/adubar foi todos. Entao, criar outra funcao do set q passa vetor, ao inves de um valor só
 
 import org.antlr.v4.runtime.CommonTokenStream;
-import sun.jvm.hotspot.runtime.linux_amd64.LinuxAMD64JavaThreadPDAccess;
-
 
 
 public class Visitor extends hortBaseVisitor {
@@ -56,22 +54,26 @@ public class Visitor extends hortBaseVisitor {
     @Override
     public Object visitAcao_adubar(hortParser.Acao_adubarContext context){
         String slot = context.slot().getText();
+
         int n;
-        if(slot.equals("todos"))
+        if(slot.equals("todos")) {
             n = 0;
+        }
         else
             n = Integer.parseInt(slot.substring(slot.length() -1 ));
+
         if(rh.getSlot_capinado(n)){
             rh.setSlot_adubado(n, true);
         }
         else{
+            System.out.println("solo nao capinado");
             Saida.println("Linha "+ context.getStart().getLine()+ ": solo nao capinado");
         }
         super.visitAcao_adubar(context);
         return null;
     }
 
-
+    //TODO considerar a primeira regada na preparação do solo como inicialização, não considerar no contador
     @Override
     public Object visitAcao_regar(hortParser.Acao_regarContext context){
         String slot = context.slot().getText();
@@ -88,15 +90,98 @@ public class Visitor extends hortBaseVisitor {
             else {
                 qtd = 1;
             }
-            if (!rh.incrementaSlot_regado(n,qtd))
+            if (!rh.incrementaSlot_regado(n,qtd)) {
+                System.out.println("solo encharcado");
                 Saida.println("Linha " + context.getStart().getLine() + ": solo encharcado");
+            }
         }
-        else
-            Saida.println("Linha "+ context.getStart().getLine()+ ": solo nao adubado");
+        else {
+            System.out.println("solo nao adubado");
+            Saida.println("Linha " + context.getStart().getLine() + ": solo nao adubado");
+        }
+
         super.visitAcao_regar(context);
         return null;
     }
 
+    //TODO isso aqui por equanto ta tratando so dias, depois tem que fazer pra mes e ano
+
+    @Override
+    public Object visitPeriodo_tempo(hortParser.Periodo_tempoContext context){
+
+        if(rh.getQtd_dias() < Integer.parseInt(context.NUM_INT().getText())){
+            rh.setQtd_dias(Integer.parseInt(context.NUM_INT().getText()));
+            rh.incrementaSlot_regado(0,-1); //TODO tem que fazer a funcao pra todos
+        }
+        else {
+            System.out.println("data inválida");
+            Saida.println("Linha " + context.getStart().getLine() + ": data inválida");
+        }
+
+        super.visitPeriodo_tempo(context);
+
+        return null;
+    }
+
+    @Override
+    public Object visitAcao_plantar(hortParser.Acao_plantarContext context){
+
+        String slot = context.slot().getText();
+        int n;
+        if(slot.equals("todos"))
+            n = 0;
+        else
+            n = Integer.parseInt(slot.substring(slot.length() -1 ));
+
+        if(rh.getSlot_regado(n) != 0) {
+            if(rh.getSemente_slot(n) == null){
+                rh.setSemente_slot(context.semente().getText(), n);
+            }
+            else {
+                System.out.println("ja existe semente plantada no slot");
+                Saida.println("Linha " + context.getStart().getLine() + ": ja existe semente plantada no slot " + context.slot().getText());
+            }
+        }
+        else {
+            System.out.println("solo nao regado");
+            Saida.println("Linha " + context.getStart().getLine() + ": solo nao regado");
+        }
+
+        super.visitAcao_plantar(context);
+
+        return null;
+    }
+
+    @Override
+    public Object visitAcao_colher(hortParser.Acao_colherContext context){
+
+        String slot = context.slot().getText();
+        int n;
+        if(slot.equals("todos"))
+            n = 0;
+        else
+            n = Integer.parseInt(slot.substring(slot.length() -1 ));
+        if(rh.getSemente_slot(n) != null) {
+            if(rh.getSemente_slot(n).equals("alface") && rh.getQtd_dias() == 10){
+                rh.setSemente_slot(null, n);
+                rh.setSlot_adubado(n, false);
+                rh.setSlot_capinado(n, false);
+                rh.setSlot_regado(n, 0);
+            }
+            else {
+                System.out.println("semente nao estava pronta para ser colhida");
+                Saida.println("Linha " + context.getStart().getLine() + ": a semente " + rh.getSemente_slot(n) + " nao estava pronta para ser colhida");
+            }
+        }
+        else {
+            System.out.println("slot nao possui uma semente");
+            Saida.println("Linha " + context.getStart().getLine() + ": slot nao possui uma semente");
+        }
+
+        super.visitAcao_colher(context);
+
+        return null;
+    }
 
 //    @Override public String visitCmdRetorne(LAParser.CmdRetorneContext ctx) {
 //        if(pilhaDeTabelas.topo()!= null)

@@ -3,7 +3,7 @@ public class RelatorioHorta {
     final int QTD_MAX_SLOTS = 4;
 
     private String nome, estacao_base, estacao_atual, local;
-    private String semeste_slot[] = new String[QTD_MAX_SLOTS];
+    private String semente_slot[] = new String[QTD_MAX_SLOTS];
     private boolean slot_capinado[] = new boolean[QTD_MAX_SLOTS];
     private boolean slot_adubado[] = new boolean[QTD_MAX_SLOTS];
     private int slot_regado[] = new int[QTD_MAX_SLOTS]; // 0 para nao regado, 1 para regado pouco, 2 para regado muito e 3 para encharcado
@@ -53,12 +53,16 @@ public class RelatorioHorta {
         this.local = local;
     }
 
-    public String[] getSemeste_slot() {
-        return semeste_slot;
+    public String getSemente_slot(int i) {
+        if(i<QTD_MAX_SLOTS)
+            return semente_slot[i];
+        else
+            return null;
     }
 
-    public void setSemeste_slot(String[] semeste_slot) {
-        this.semeste_slot = semeste_slot;
+    public void setSemente_slot(String semente_slot, int i) {
+        if(i<QTD_MAX_SLOTS)
+            this.semente_slot[i] = semente_slot;
     }
 
     public boolean getSlot_capinado(int i) {
