@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class RelatorioHorta {
 
     final int QTD_MAX_SLOTS = 4;
@@ -10,7 +13,7 @@ public class RelatorioHorta {
 
     private int qtd_dias;
 
-    private String [] colheita;
+    private List<String> colheita = new ArrayList<String>();
 
     public RelatorioHorta(){
         this.qtd_dias = 0;
@@ -112,6 +115,14 @@ public class RelatorioHorta {
         return false;
 
     }
+    public void decrement_day(){
+        int i ;
+        for(i=0; i < QTD_MAX_SLOTS; i ++){
+            if(this.slot_regado[i] > 0){
+                this.slot_regado[i] -= 1;
+            }
+        }
+    }
 
 
     public int getQtd_dias() {
@@ -122,11 +133,12 @@ public class RelatorioHorta {
         this.qtd_dias = qtd_dias;
     }
 
-    public String[] getColheita() {
-        return colheita;
+    public void addColheita(String planta){
+        this.colheita.add(planta);
     }
-
-    public void setColheita(String[] colheita) {
-        this.colheita = colheita;
+    public void gerarRelatorio(){
+        System.out.println("A horta "+ this.getNome() + ", criada na estacao " +this.getEstacao_base()+ " no local " + this.getLocal() + " teve como resultados:");
+        for (String planta : this.colheita)
+            System.out.println("    -   A colheita de " + planta + " foi feita com sucesso!");
     }
 }

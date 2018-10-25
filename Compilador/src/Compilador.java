@@ -37,30 +37,16 @@ public class Compilador {
                 Visitor v = new Visitor();   //leo colocou isso agora mas n funcionou parece
                 v.setTokenStream(tokens);
                 v.visitHorta(arvore);
+                RelatorioHorta rh = v.rh;
+
                 if(!out.isModificado()) {
 
-                    //Executa gerador de código
-                    //GeradorDeCodigo gc = new GeradorDeCodigo();
-//                    ParseTreeWalker.DEFAULT.walk(gc, arvore);
-//                    out.println(gc.getString());
-//                    try(PrintWriter pw = new PrintWriter(new FileWriter(args[1]))) {
-//                        pw.print(out);
-//                    }
-                }
-                else{
-                    try(PrintWriter pw = new PrintWriter(new FileWriter(args[1]))) {
-                        pw.print(out);
-                        pw.println("Fim da compilacao");
-                    }
-                }
-            }
-            else {
-                try (PrintWriter pw = new PrintWriter(new FileWriter(args[1]))) {
+                    rh.gerarRelatorio();
 
-                    pw.print(out);
-                    pw.println("Fim da compilacao");
                 }
+
             }
+
         //}
 
     }

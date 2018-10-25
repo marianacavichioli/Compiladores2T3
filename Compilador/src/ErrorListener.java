@@ -19,13 +19,10 @@ public class ErrorListener implements ANTLRErrorListener{
         //Caso a saida fora modificada
         if (!this.sp.isModificado()) {
             //Verifica erro de simbolo n�o identificado
-            if(ct.getType() == LALexer.ERROCHAR){
+            if(ct.getType() == hortLexer.ERROCHAR){
                 this.sp.println("Linha " + i + ": " + ct.getText()+ " - simbolo nao identificado");
 
                 //Verifica erro de coment�rio n�o fechado
-            }else if( ct.getType() == LALexer.COMMENTNFECHADO ) {
-                this.sp.println("Linha " + (i + 1) + ": comentario nao fechado");
-
             }else{
                 //Verifica erro de fim de arquivo e tambem de erro sintatico proxima de uma palavra
                 if (ct.getText().equals("<EOF>")){

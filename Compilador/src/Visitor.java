@@ -66,8 +66,8 @@ public class Visitor extends hortBaseVisitor {
             rh.setSlot_adubado(n, true);
         }
         else{
-            System.out.println("solo nao capinado");
-            Saida.println("Linha "+ context.getStart().getLine()+ ": solo nao capinado");
+            System.out.println("Linha "+ context.getStart().getLine()+ ": solo nao capinado");
+            //Saida.println("Linha "+ context.getStart().getLine()+ ": solo nao capinado");
         }
         super.visitAcao_adubar(context);
         return null;
@@ -91,13 +91,13 @@ public class Visitor extends hortBaseVisitor {
                 qtd = 1;
             }
             if (!rh.incrementaSlot_regado(n,qtd)) {
-                System.out.println("solo encharcado");
-                Saida.println("Linha " + context.getStart().getLine() + ": solo encharcado");
+                System.out.println("Linha " + context.getStart().getLine() + ": solo encharcado");
+              //  Saida.println("Linha " + context.getStart().getLine() + ": solo encharcado");
             }
         }
         else {
-            System.out.println("solo nao adubado");
-            Saida.println("Linha " + context.getStart().getLine() + ": solo nao adubado");
+            System.out.println("Linha " + context.getStart().getLine() + ": solo nao adubado");
+           // Saida.println("Linha " + context.getStart().getLine() + ": solo nao adubado");
         }
 
         super.visitAcao_regar(context);
@@ -114,9 +114,11 @@ public class Visitor extends hortBaseVisitor {
             rh.incrementaSlot_regado(0,-1); //TODO tem que fazer a funcao pra todos
         }
         else {
-            System.out.println("data inválida");
-            Saida.println("Linha " + context.getStart().getLine() + ": data inválida");
+            System.out.println("Linha " + context.getStart().getLine() + ": data inválida");
+            //Saida.println("Linha " + context.getStart().getLine() + ": data inválida");
         }
+        if(context.op_data().getText().equals("Dia"))
+            rh.decrement_day();
 
         super.visitPeriodo_tempo(context);
 
@@ -138,13 +140,13 @@ public class Visitor extends hortBaseVisitor {
                 rh.setSemente_slot(context.semente().getText(), n);
             }
             else {
-                System.out.println("ja existe semente plantada no slot");
-                Saida.println("Linha " + context.getStart().getLine() + ": ja existe semente plantada no slot " + context.slot().getText());
+                System.out.println("Linha " + context.getStart().getLine() + ": ja existe semente plantada no slot " + context.slot().getText());
+                //Saida.println("Linha " + context.getStart().getLine() + ": ja existe semente plantada no slot " + context.slot().getText());
             }
         }
         else {
-            System.out.println("solo nao regado");
-            Saida.println("Linha " + context.getStart().getLine() + ": solo nao regado");
+            System.out.println("Linha " + context.getStart().getLine() + ": solo nao regado");
+            //Saida.println("Linha " + context.getStart().getLine() + ": solo nao regado");
         }
 
         super.visitAcao_plantar(context);
@@ -162,20 +164,22 @@ public class Visitor extends hortBaseVisitor {
         else
             n = Integer.parseInt(slot.substring(slot.length() -1 ));
         if(rh.getSemente_slot(n) != null) {
-            if(rh.getSemente_slot(n).equals("alface") && rh.getQtd_dias() == 10){
+            if(rh.getSemente_slot(n).equals("alface") && rh.getQtd_dias()  > 0){
                 rh.setSemente_slot(null, n);
                 rh.setSlot_adubado(n, false);
                 rh.setSlot_capinado(n, false);
                 rh.setSlot_regado(n, 0);
+                rh.addColheita("alface");
             }
             else {
-                System.out.println("semente nao estava pronta para ser colhida");
-                Saida.println("Linha " + context.getStart().getLine() + ": a semente " + rh.getSemente_slot(n) + " nao estava pronta para ser colhida");
+
+                System.out.println("Linha " + context.getStart().getLine() + ": a semente " + rh.getSemente_slot(n) + " nao estava pronta para ser colhida");
+                //Saida.println("Linha " + context.getStart().getLine() + ": a semente " + rh.getSemente_slot(n) + " nao estava pronta para ser colhida");
             }
         }
         else {
-            System.out.println("slot nao possui uma semente");
-            Saida.println("Linha " + context.getStart().getLine() + ": slot nao possui uma semente");
+            System.out.println("Linha " + context.getStart().getLine() + ": slot nao possui uma semente");
+            //Saida.println("Linha " + context.getStart().getLine() + ": slot nao possui uma semente");
         }
 
         super.visitAcao_colher(context);
