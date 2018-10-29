@@ -1,0 +1,16 @@
+Horta legal:
+    Estacao: outono
+    Local: ensolarado
+
+    Preparar solo :
+        Capinar todos
+        Adubar todos
+        Regar muito todos
+    Dia 1 :
+             Plantar alface slot1
+             Plantar alface slot2
+
+             Regar pouco todos
+    Dia 2 :
+             Colher todos
+Fim horta

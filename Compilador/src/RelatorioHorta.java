@@ -6,8 +6,9 @@ public class RelatorioHorta {
     final int QTD_MAX_SLOTS = 4;
 
     private String nome, estacao_base, estacao_atual, local;
-    public String semente_slot[] = new String[QTD_MAX_SLOTS]; // lembrar sempre que se receber slot 1, é o indice 0 (tratar isso em todos os métodos)
+    private String semente_slot[] = new String[QTD_MAX_SLOTS]; // lembrar sempre que se receber slot 1, é o indice 0 (tratar isso em todos os métodos)
 
+    private boolean perdeu_jogo = false; // variavel que indica se perdeu o jogo
 
     private boolean slot_capinado[] = new boolean[QTD_MAX_SLOTS];
     private boolean slot_adubado[] = new boolean[QTD_MAX_SLOTS];
@@ -239,5 +240,14 @@ public class RelatorioHorta {
         System.out.println("A horta "+ this.getNome() + ", criada na estacao " +this.getEstacao_base()+ " no local " + this.getLocal() + " teve como resultados:");
         for (String planta : this.colheita)
             System.out.println("    -   A colheita de " + planta + " foi feita com sucesso!");
+    }
+
+
+    public boolean getPerdeu_jogo() {
+        return perdeu_jogo;
+    }
+
+    public void setPerdeu_jogo(boolean perdeu_jogo) {
+        this.perdeu_jogo = perdeu_jogo;
     }
 }

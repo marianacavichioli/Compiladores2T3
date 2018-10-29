@@ -11,16 +11,8 @@ public class Compilador {
 
     public static void main(String[] args) throws IOException, RecognitionException {
 
-        //File diretorioCasosTeste = new File(CAMINHO_CASOS_TESTE + "/entrada");
-        //File [] casosTeste = diretorioCasosTeste.listFiles();
-        //int totalCasosTeste = casosTeste.length;
-        //int casosTesteErrados = 0;
-        //for(File casoTeste : casosTeste){
-            //Cria a saida
-            Saida out = new Saida();
 
-            //Para quando for gerar o jar, utilizar a linha abaixo em vez da outra, pois iremos recever o c�digo por argumento
-            //ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(casoTeste));
+        Saida out = new Saida();
 
          CharStream input = CharStreams.fromFileName(args[0]);
 
@@ -34,20 +26,16 @@ public class Compilador {
 
 
             if(!out.isModificado()){
-                Visitor v = new Visitor();   //leo colocou isso agora mas n funcionou parece
+                Visitor v = new Visitor();
                 v.setTokenStream(tokens);
                 v.visitHorta(arvore);
                 RelatorioHorta rh = v.rh;
 
                 if(!out.isModificado()) {
-
-                    rh.gerarRelatorio();
-
+                    if(!rh.getPerdeu_jogo())
+                        rh.gerarRelatorio();
                 }
 
             }
-
-        //}
-
     }
 }
