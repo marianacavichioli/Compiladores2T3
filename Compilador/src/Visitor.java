@@ -2,14 +2,11 @@ import org.antlr.v4.runtime.CommonTokenStream;
 
 
 
-
-
 /*
 
  TA COM PROBLEMA NA HORA DE COLHER!
 
  */
-
 
 
 
@@ -169,9 +166,10 @@ public class Visitor extends hortBaseVisitor {
     @Override
     public Object visitAcao_colher(hortParser.Acao_colherContext context){
 
+
         String slot = context.slot().getText();
         String semente; // indica a semente do slot em questao
-        int n, qtd_repetir_colher;
+        int n, qtd_repetir_colher,indice = 0;
         if(slot.equals("todos")) {
             n = 0;
             qtd_repetir_colher = rh.getQTD_MAX_SLOTS(); // Colher em todos os slots
@@ -179,17 +177,19 @@ public class Visitor extends hortBaseVisitor {
         else {
             n = Integer.parseInt(slot.substring(slot.length() - 1));
             qtd_repetir_colher = 1; // Colher em um slot só
+            indice = n; // usará o n mesmo como indice
         }
+
         if(rh.getSemente_slot(n) != null) {
+
             for(int j=1;j<=qtd_repetir_colher;j++){
-                if(n!=0)
-                    semente = rh.getSemente_slot(n);
-                else {
-                    semente = rh.getSemente_slot(j); // TODO: PROBLEMA AQUI QUE TA RETORNANDO NULL
-                    System.out.println("semente = " + semente);
-                }
+                if(n==0)
+                    indice = j; // SE FOR O CASO "todos": mudar o indice de acordo com o j
+
+                semente = rh.getSemente_slot(indice);
+
                 if(semente.equals("alface") && rh.getQtd_dias()  > 0){
-                    rh.setSemente_slot(null, n);
+                    rh.setSemente_slot(null, indice);
                     rh.setSlot_adubado(n, false);
                     rh.setSlot_capinado(n, false);
                     rh.setSlot_regado(n, 0);
