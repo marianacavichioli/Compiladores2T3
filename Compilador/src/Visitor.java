@@ -1,7 +1,20 @@
-// TODO: Se o n = 0 é pq na hora de regar/capinar/adubar foi todos. Entao, criar outra funcao do set q passa vetor, ao inves de um valor só
-
 import org.antlr.v4.runtime.CommonTokenStream;
 
+
+
+
+
+/*
+
+ TA COM PROBLEMA NA HORA DE COLHER!
+
+ */
+
+
+
+
+
+//TODO: Pensar no caso de ja ter inicializado todos, mas usar só em slot .. (nao precisa ficar regando todos se nao ta usando todos. pensar nisso)
 
 public class Visitor extends hortBaseVisitor {
 
@@ -73,7 +86,7 @@ public class Visitor extends hortBaseVisitor {
         return null;
     }
 
-    //TODO considerar a primeira regada na preparação do solo como inicialização, não considerar no contador
+    //TODO considerar a primeira regada na preparação do solo como inicialização, não considerar no contador (q??)
     @Override
     public Object visitAcao_regar(hortParser.Acao_regarContext context){
         String slot = context.slot().getText();
@@ -109,16 +122,15 @@ public class Visitor extends hortBaseVisitor {
     @Override
     public Object visitPeriodo_tempo(hortParser.Periodo_tempoContext context){
 
-        if(rh.getQtd_dias() < Integer.parseInt(context.NUM_INT().getText())){
+        if(rh.getQtd_dias() < Integer.parseInt(context.NUM_INT().getText())){ // Verificando se nao ta voltando no tempo
             rh.setQtd_dias(Integer.parseInt(context.NUM_INT().getText()));
-            rh.incrementaSlot_regado(0,-1); //TODO tem que fazer a funcao pra todos
+            if(context.op_data().getText().equals("Dia"))
+                rh.decrementar_dia();
         }
         else {
             System.out.println("Linha " + context.getStart().getLine() + ": data inválida");
             //Saida.println("Linha " + context.getStart().getLine() + ": data inválida");
         }
-        if(context.op_data().getText().equals("Dia"))
-            rh.decrement_day();
 
         super.visitPeriodo_tempo(context);
 
@@ -158,23 +170,36 @@ public class Visitor extends hortBaseVisitor {
     public Object visitAcao_colher(hortParser.Acao_colherContext context){
 
         String slot = context.slot().getText();
-        int n;
-        if(slot.equals("todos"))
+        String semente; // indica a semente do slot em questao
+        int n, qtd_repetir_colher;
+        if(slot.equals("todos")) {
             n = 0;
-        else
-            n = Integer.parseInt(slot.substring(slot.length() -1 ));
+            qtd_repetir_colher = rh.getQTD_MAX_SLOTS(); // Colher em todos os slots
+        }
+        else {
+            n = Integer.parseInt(slot.substring(slot.length() - 1));
+            qtd_repetir_colher = 1; // Colher em um slot só
+        }
         if(rh.getSemente_slot(n) != null) {
-            if(rh.getSemente_slot(n).equals("alface") && rh.getQtd_dias()  > 0){
-                rh.setSemente_slot(null, n);
-                rh.setSlot_adubado(n, false);
-                rh.setSlot_capinado(n, false);
-                rh.setSlot_regado(n, 0);
-                rh.addColheita("alface");
-            }
-            else {
+            for(int j=1;j<=qtd_repetir_colher;j++){
+                if(n!=0)
+                    semente = rh.getSemente_slot(n);
+                else {
+                    semente = rh.getSemente_slot(j); // TODO: PROBLEMA AQUI QUE TA RETORNANDO NULL
+                    System.out.println("semente = " + semente);
+                }
+                if(semente.equals("alface") && rh.getQtd_dias()  > 0){
+                    rh.setSemente_slot(null, n);
+                    rh.setSlot_adubado(n, false);
+                    rh.setSlot_capinado(n, false);
+                    rh.setSlot_regado(n, 0);
+                    rh.addColheita("alface");
+                }
+                else {
 
-                System.out.println("Linha " + context.getStart().getLine() + ": a semente " + rh.getSemente_slot(n) + " nao estava pronta para ser colhida");
-                //Saida.println("Linha " + context.getStart().getLine() + ": a semente " + rh.getSemente_slot(n) + " nao estava pronta para ser colhida");
+                    System.out.println("Linha " + context.getStart().getLine() + ": a semente " + rh.getSemente_slot(n) + " nao estava pronta para ser colhida");
+                    //Saida.println("Linha " + context.getStart().getLine() + ": a semente " + rh.getSemente_slot(n) + " nao estava pronta para ser colhida");
+                }
             }
         }
         else {

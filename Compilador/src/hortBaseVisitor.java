@@ -1,4 +1,4 @@
-// Generated from /home/mariana/Documents/UFSCar/CC2/Compiladores2T3/Compilador/src/hort.g4 by ANTLR 4.7
+// Generated from /Users/Macbook/Documents/GitKraken Projects/Compiladores2T3/Compilador/src/hort.g4 by ANTLR 4.7
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 /**

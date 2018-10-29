@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Compiladores2T3">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/CorretorTrabalho1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Compilador.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
