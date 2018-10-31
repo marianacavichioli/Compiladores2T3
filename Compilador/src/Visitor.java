@@ -66,6 +66,8 @@ public class Visitor extends hortBaseVisitor {
             rh.setSlot_adubado(n, true);
         } else {
             System.out.println("Linha " + context.getStart().getLine() + ": solo nao capinado");
+            rh.setSlot_capinado(n, true);
+            rh.setSlot_adubado(n, true);
             rh.setPerdeu_jogo(true);
         }
         super.visitAcao_adubar(context);
@@ -94,7 +96,18 @@ public class Visitor extends hortBaseVisitor {
             }
         } else {
             System.out.println("Linha " + context.getStart().getLine() + ": solo nao adubado");
+            rh.setSlot_adubado(n, true);
             rh.setPerdeu_jogo(true);
+            int qtd;
+            if (context.intensidade().getText().equals("muito")) {
+                qtd = 2;
+            } else {
+                qtd = 1;
+            }
+            if (!rh.incrementaSlot_regado(n, qtd)) {
+                System.out.println("Linha " + context.getStart().getLine() + ": solo encharcado");
+                rh.setPerdeu_jogo(true);
+            }
         }
 
         super.visitAcao_regar(context);
@@ -139,6 +152,8 @@ public class Visitor extends hortBaseVisitor {
             }
         } else {
             System.out.println("Linha " + context.getStart().getLine() + ": solo nao regado");
+            rh.incrementaSlot_regado(n, 1);
+            rh.setSemente_slot(context.semente().getText(), n);
             rh.setPerdeu_jogo(true);
         }
 
