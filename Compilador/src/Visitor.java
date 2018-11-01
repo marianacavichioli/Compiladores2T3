@@ -1,7 +1,7 @@
 import org.antlr.v4.runtime.CommonTokenStream;
 
 //TODO: Pensar no caso de ja ter inicializado todos, mas usar só em slot .. (nao precisa ficar regando todos se nao ta usando todos. pensar nisso)
-// TODO: dar erro semantico se o regado chegar em -1
+//TODO: dar erro semantico se o regado chegar em -1
 
 
 public class Visitor extends hortBaseVisitor {
@@ -165,10 +165,10 @@ public class Visitor extends hortBaseVisitor {
     @Override
     public Object visitAcao_colher(hortParser.Acao_colherContext context) {
 
-
         String slot = context.slot().getText();
         String semente; // indica a semente do slot em questao
         int n, qtd_repetir_colher, indice = 0;
+
         if (slot.equals("todos")) {
             n = 0;
             qtd_repetir_colher = rh.getQTD_MAX_SLOTS(); // Colher em todos os slots
@@ -186,14 +186,57 @@ public class Visitor extends hortBaseVisitor {
 
                 semente = rh.getSemente_slot(indice);
 
-                if (semente.equals("alface") && rh.getQtd_dias() > 0) {
+                //TODO pensar quanto tempo depois do tempo certo da colheita é possível colher sem a planta ter morrido
+
+                if (semente.equals("alface") && rh.getQtd_dias() >= 2) { //45 dias
                     rh.setSemente_slot(null, indice);
                     rh.setSlot_adubado(n, false);
                     rh.setSlot_capinado(n, false);
                     rh.setSlot_regado(n, 0);
                     rh.addColheita("alface");
-                } else {
-
+                }else if(semente.equals("hortelã") && (rh.getQtd_dias() >= 30 | rh.getQtd_meses() == 1)){ //7 meses
+                    rh.setSemente_slot(null, indice);
+                    rh.setSlot_adubado(n, false);
+                    rh.setSlot_capinado(n, false);
+                    rh.setSlot_regado(n, 0);
+                    rh.addColheita("hortelã");
+                }else if(semente.equals("abobora") && (rh.getQtd_dias() >= 90 | rh.getQtd_meses() == 2)){ //5 meses
+                    rh.setSemente_slot(null, indice);
+                    rh.setSlot_adubado(n, false);
+                    rh.setSlot_capinado(n, false);
+                    rh.setSlot_regado(n, 0);
+                    rh.addColheita("abobora");
+                }else if(semente.equals("abobrinha") && rh.getQtd_dias() >= 10){ //50 dias
+                    rh.setSemente_slot(null, indice);
+                    rh.setSlot_adubado(n, false);
+                    rh.setSlot_capinado(n, false);
+                    rh.setSlot_regado(n, 0);
+                    rh.addColheita("abobrinha");
+                }else if(semente.equals("couve") && rh.getQtd_dias() >= 10){ //50 dias
+                    rh.setSemente_slot(null, indice);
+                    rh.setSlot_adubado(n, false);
+                    rh.setSlot_capinado(n, false);
+                    rh.setSlot_regado(n, 0);
+                    rh.addColheita("couve");
+                }else if(semente.equals("beterraba") && rh.getQtd_dias() >= 5){ //70 dias
+                    rh.setSemente_slot(null, indice);
+                    rh.setSlot_adubado(n, false);
+                    rh.setSlot_capinado(n, false);
+                    rh.setSlot_regado(n, 0);
+                    rh.addColheita("beterraba");
+                }else if(semente.equals("batata") && (rh.getQtd_dias() >= 90 | rh.getQtd_meses() == 2)){ //90 dias
+                    rh.setSemente_slot(null, indice);
+                    rh.setSlot_adubado(n, false);
+                    rh.setSlot_capinado(n, false);
+                    rh.setSlot_regado(n, 0);
+                    rh.addColheita("batata");
+                }else if(semente.equals("morango") && rh.getQtd_dias() >= 7){ //80 dias
+                    rh.setSemente_slot(null, indice);
+                    rh.setSlot_adubado(n, false);
+                    rh.setSlot_capinado(n, false);
+                    rh.setSlot_regado(n, 0);
+                    rh.addColheita("morango");
+                }else {
                     System.out.println("Linha " + context.getStart().getLine() + ": a semente " + rh.getSemente_slot(n) + " nao estava pronta para ser colhida");
                     rh.setPerdeu_jogo(true);
                 }

@@ -5,7 +5,7 @@ Horta legal:
     Preparar solo:
         Capinar slot1
         Adubar slot1
-        Regar pouco slot1
+        Regar muito slot1
     Dia 1 :
              Plantar alface slot1
              Regar pouco slot1

@@ -14,7 +14,7 @@ public class RelatorioHorta {
     private boolean slot_adubado[] = new boolean[QTD_MAX_SLOTS];
     private int slot_regado[] = new int[QTD_MAX_SLOTS]; // 0 para nao regado, 1 para regado pouco, 2 para regado muito e 3 para encharcado
 
-    private int qtd_dias;
+    private int qtd_dias, qtd_meses;
 
     private List<String> colheita = new ArrayList<String>();
 
@@ -208,9 +208,7 @@ public class RelatorioHorta {
             }
         }
         return false;
-
     }
-
 
     public boolean decrementar_dia(){
         boolean pode_decrementar = true;
@@ -230,6 +228,14 @@ public class RelatorioHorta {
 
     public void setQtd_dias(int qtd_dias) {
         this.qtd_dias = qtd_dias;
+    }
+
+    public int getQtd_meses() {
+        return qtd_meses;
+    }
+
+    public void setQtd_meses(int qtd_meses) {
+        this.qtd_meses = qtd_meses;
     }
 
     public void addColheita(String planta){
