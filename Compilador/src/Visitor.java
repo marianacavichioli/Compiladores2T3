@@ -4,6 +4,8 @@ import org.antlr.v4.runtime.CommonTokenStream;
 //TODO: dar erro semantico se o regado chegar em -1
 
 
+//TODO: acho que nao tem nada feito sobre ano ainda
+
 public class Visitor extends hortBaseVisitor {
 
     CommonTokenStream cts;
@@ -77,6 +79,7 @@ public class Visitor extends hortBaseVisitor {
     //TODO considerar a primeira regada na preparação do solo como inicialização, não considerar no contador (q??)
     @Override
     public Object visitAcao_regar(hortParser.Acao_regarContext context) {
+        System.out.println("vou regar");
         String slot = context.slot().getText();
         int n;
         if (slot.equals("todos"))
@@ -161,6 +164,7 @@ public class Visitor extends hortBaseVisitor {
 
         return null;
     }
+
 
     @Override
     public Object visitAcao_colher(hortParser.Acao_colherContext context) {
@@ -250,4 +254,35 @@ public class Visitor extends hortBaseVisitor {
 
         return null;
     }
+
+
+    @Override
+    public Object visitCmdPara(hortParser.CmdParaContext context){
+        System.out.println("to no para");
+        int inicio = Integer.parseInt(context.inicio.getText());
+        int fim = Integer.parseInt(context.fim.getText());
+
+        if (context.op_data().getText().equals("Dia")){ // se o para for percorrer entre os dias
+            for(int i=inicio;i<fim;i++){
+                //visitAcao(context.acao(i)); //TODO: TA DANDO ERRADO
+            }
+        }
+        //TODO: ainda tem que tratar o caso de ser mes ou ano
+
+        super.visitCmdPara(context);
+        return null;
+    }
+
+//    @Override
+//    public Object visitAcao(hortParser.AcaoContext context){
+//        System.out.println("to na acao");
+//
+//        if(context.acao_regar()!=null) {
+//            System.out.println("queria regar");
+//            visitAcao_regar(context.acao_regar());
+//        }
+//
+//        super.visitAcao(context);
+//        return null;
+//    }
 }

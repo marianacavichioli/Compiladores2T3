@@ -10,23 +10,20 @@ MES30 : '2'|'4'|'6'|'9'|'11';
 
 ANO : ('0'..'9')('0'..'9')('0'..'9')('0'..'9');
 
-//DATA : (('0')('1'..'9') '/' (MES30 | MES31) '/' ANO)
-//		|(('1'..'2')('0'..'9') '/' (MES30 | MES31) '/' ANO)
-//		|(('3')('0') '/' (MES30 | MES31) '/' ANO)
-//		|(('3')('1') '/' MES31 '/' ANO);
+
+WS	:	(' ' | '\t' | '\r' | '\n') -> skip;
+ERROCHAR:.;
+
+horta: 'Horta' IDENT ':' declaracoes  corpo 'Fim horta' ;
 
 estacao : 'verao' | 'primavera' | 'inverno' | 'outono';
 
 
-WS	:	(' ' | '\t' | '\r' | '\n') -> skip;
-ERROCHAR:.;
 
 semente : 'hortelã' | 'alface' | 'abobora' | 'abobrinha' | 'couve'| 'beterraba' | 'batata'| 'morango' ;
 intensidade : 'pouco' | 'muito';
 op_data : 'Dia' | 'Mês' | 'Ano' ;
 slot: 'slot1'| 'slot2'| 'slot3' | 'slot4' | 'todos';
-
-horta: 'Horta' IDENT ':' declaracoes  corpo 'Fim horta' ;
 
 declaracoes : 'Estacao' ':' estacao  'Local' ':' local=IDENT ;
 
@@ -50,5 +47,5 @@ acao_capinar : 'Capinar' slot ;
 
 acao_adubar : 'Adubar' slot ;
 
-cmdPara : 'para' op_data NUM_INT 'ate' op_data NUM_INT 'faca' (acao*) 'fim_para';
+cmdPara : 'para' op_data inicio=NUM_INT 'ate' fim=NUM_INT 'faca' ':' (acao*) 'fim_para';
 
