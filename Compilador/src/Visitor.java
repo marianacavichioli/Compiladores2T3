@@ -79,7 +79,7 @@ public class Visitor extends hortBaseVisitor {
     //TODO considerar a primeira regada na preparação do solo como inicialização, não considerar no contador (q??)
     @Override
     public Object visitAcao_regar(hortParser.Acao_regarContext context) {
-        System.out.println("vou regar");
+        //System.out.println("vou regar");
         String slot = context.slot().getText();
         int n;
         if (slot.equals("todos"))
@@ -139,6 +139,22 @@ public class Visitor extends hortBaseVisitor {
     @Override
     public Object visitAcao_plantar(hortParser.Acao_plantarContext context) {
 
+        //variáveis para simplificar o código
+        boolean primavera = rh.getEstacao_atual().equals("primavera");
+        boolean outono = rh.getEstacao_atual().equals("outono");
+        boolean inverno = rh.getEstacao_atual().equals("inverno");
+        boolean verao = rh.getEstacao_atual().equals("verao");
+
+        boolean hortela = context.semente().getText().equals("hortelã");
+        boolean alface = context.semente().getText().equals("alface");
+        boolean couve = context.semente().getText().equals("couve");
+        boolean beterraba = context.semente().getText().equals("beterraba");
+        boolean abobora = context.semente().getText().equals("abobora");
+        boolean abobrinha = context.semente().getText().equals("abobrinha");
+        boolean batata = context.semente().getText().equals("batata");
+        boolean morango = context.semente().getText().equals("morango");
+
+
         String slot = context.slot().getText();
         int n;
         if (slot.equals("todos"))
@@ -148,7 +164,22 @@ public class Visitor extends hortBaseVisitor {
 
         if (rh.getSlot_regado(n) != 0) {
             if (rh.getSemente_slot(n) == null) {
-                rh.setSemente_slot(context.semente().getText(), n);
+                if((primavera || outono) && (hortela || alface))
+                    rh.setSemente_slot(context.semente().getText(), n);
+                else if((primavera || inverno || outono) && (couve))
+                    rh.setSemente_slot(context.semente().getText(), n);
+                else if((primavera) && (batata))
+                    rh.setSemente_slot(context.semente().getText(), n);
+                else if((outono) && (beterraba))
+                    rh.setSemente_slot(context.semente().getText(), n);
+                else if((inverno || outono) && (morango))
+                    rh.setSemente_slot(context.semente().getText(), n);
+                else if((primavera || verao) && (abobora))
+                    rh.setSemente_slot(context.semente().getText(), n);
+                else if((verao) && (abobrinha))
+                    rh.setSemente_slot(context.semente().getText(), n);
+                else
+                    System.out.println("Linha " + context.getStart().getLine() + ": a semente " + context.semente().getText() + " não pode ser plantada na estação " + rh.getEstacao_atual());
             } else {
                 System.out.println("Linha " + context.getStart().getLine() + ": ja existe semente plantada no slot " + context.slot().getText());
                 rh.setPerdeu_jogo(true);
@@ -259,14 +290,14 @@ public class Visitor extends hortBaseVisitor {
     @Override
     public Object visitCmdPara(hortParser.CmdParaContext context){
         System.out.println("to no para");
-        int inicio = Integer.parseInt(context.inicio.getText());
-        int fim = Integer.parseInt(context.fim.getText());
+        //int inicio = Integer.parseInt(context.inicio.getText());
+        //int fim = Integer.parseInt(context.fim.getText());
 
-        if (context.op_data().getText().equals("Dia")){ // se o para for percorrer entre os dias
-            for(int i=inicio;i<fim;i++){
-                //visitAcao(context.acao(i)); //TODO: TA DANDO ERRADO
-            }
-        }
+        //if (context.op_data().getText().equals("Dia")){ // se o para for percorrer entre os dias
+//            for(int i=inicio;i<fim;i++){
+//                //visitAcao(context.acao(i)); //TODO: TA DANDO ERRADO
+//            }
+//        }
         //TODO: ainda tem que tratar o caso de ser mes ou ano
 
         super.visitCmdPara(context);

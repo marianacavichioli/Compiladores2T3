@@ -187,12 +187,30 @@ public class RelatorioHorta {
     }
 
     public boolean incrementaSlot_regado(int i, int qtd) {
-        if(i<=QTD_MAX_SLOTS) {
+        if(i <= QTD_MAX_SLOTS) {
             if(i==0){ // caso em que foi pedido todos
                 boolean pode_incrementar = true;
                 for(int j=0;j<QTD_MAX_SLOTS;j++){
+
+                    if (this.slot_regado[j] == 0){ // caso o slot nao tenha sido regado ainda
+                        this.slot_regado[j] += qtd;
+                        return true;
+                    }
+
                     this.slot_regado[j] += qtd;
-                    if (this.slot_regado[j] >= 3) { // Caso algum slot seja 3 ou mais, indica que nao podia incrementar
+
+                    // verifica se pode regar os slots de acordo com a semente
+
+                    if (this.slot_regado[j] >= 1 && (this.semente_slot[j].equals("alface") || this.semente_slot[j].equals("hortelã") || this.semente_slot[j].equals("batata"))) { // Casos específicos para cada semente
+                        pode_incrementar = false;
+                        this.slot_regado[j] = 1;
+                    }
+                    else if (this.slot_regado[j] >= 2 && (this.semente_slot[j].equals("couve") || this.semente_slot[j].equals("beterraba") || this.semente_slot[j].equals("morango") || this.semente_slot[j].equals("abobora") || this.semente_slot[j].equals("abobrinha"))){
+                        pode_incrementar = false;
+                        this.slot_regado[j] = 2;
+                    }
+                    else{
+                        System.out.println("entrei");
                         pode_incrementar = false;
                         this.slot_regado[j] = 3;
                     }
@@ -200,11 +218,24 @@ public class RelatorioHorta {
                 return pode_incrementar;
             }
             else { // caso em que foi pedido um slot especifico
-                this.slot_regado[i-1] += qtd;
-                if (this.slot_regado[i-1] < 3) {
+
+                if (this.slot_regado[i-1] == 0){ // caso o slot nao tenha sido regado ainda
+                    this.slot_regado[i-1] += qtd;
                     return true;
                 }
-                this.slot_regado[i-1] = 3;
+
+                this.slot_regado[i-1] += qtd;
+
+                // verifica se pode regar os slots de acordo com a semente
+
+                if (this.slot_regado[i-1] >= 1 && (this.semente_slot[i-1].equals("alface") || this.semente_slot[i-1].equals("hortelã") || this.semente_slot[i-1].equals("batata"))) { // Casos específicos para cada semente
+                    this.slot_regado[i-1] = 3;
+                    return false;
+                }
+                else if (this.slot_regado[i-1] >= 2 && (this.semente_slot[i-1].equals("couve") || this.semente_slot[i-1].equals("beterraba") || this.semente_slot[i-1].equals("morango") || this.semente_slot[i-1].equals("abobora") || this.semente_slot[i-1].equals("abobrinha"))){
+                    this.slot_regado[i-1] = 3;
+                    return false;
+                }
             }
         }
         return false;
