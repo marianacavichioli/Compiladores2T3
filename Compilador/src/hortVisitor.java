@@ -10,6 +10,12 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  */
 public interface hortVisitor<T> extends ParseTreeVisitor<T> {
 	/**
+	 * Visit a parse tree produced by {@link hortParser#horta}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitHorta(hortParser.HortaContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link hortParser#estacao}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -39,12 +45,6 @@ public interface hortVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitSlot(hortParser.SlotContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link hortParser#horta}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitHorta(hortParser.HortaContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link hortParser#declaracoes}.
 	 * @param ctx the parse tree

@@ -23,24 +23,24 @@ public class hortParser extends Parser {
 		T__31=32, T__32=33, T__33=34, T__34=35, T__35=36, T__36=37, IDENT=38, 
 		NUM_INT=39, MES31=40, MES30=41, ANO=42, WS=43, ERROCHAR=44;
 	public static final int
-		RULE_estacao = 0, RULE_semente = 1, RULE_intensidade = 2, RULE_op_data = 3, 
-		RULE_slot = 4, RULE_horta = 5, RULE_declaracoes = 6, RULE_corpo = 7, RULE_preparar_solo = 8, 
-		RULE_cmd = 9, RULE_periodo_tempo = 10, RULE_acao = 11, RULE_acao_plantar = 12, 
-		RULE_acao_regar = 13, RULE_acao_colher = 14, RULE_acao_capinar = 15, RULE_acao_adubar = 16, 
-		RULE_cmdPara = 17;
+		RULE_horta = 0, RULE_estacao = 1, RULE_semente = 2, RULE_intensidade = 3, 
+		RULE_op_data = 4, RULE_slot = 5, RULE_declaracoes = 6, RULE_corpo = 7, 
+		RULE_preparar_solo = 8, RULE_cmd = 9, RULE_periodo_tempo = 10, RULE_acao = 11, 
+		RULE_acao_plantar = 12, RULE_acao_regar = 13, RULE_acao_colher = 14, RULE_acao_capinar = 15, 
+		RULE_acao_adubar = 16, RULE_cmdPara = 17;
 	public static final String[] ruleNames = {
-		"estacao", "semente", "intensidade", "op_data", "slot", "horta", "declaracoes", 
+		"horta", "estacao", "semente", "intensidade", "op_data", "slot", "declaracoes", 
 		"corpo", "preparar_solo", "cmd", "periodo_tempo", "acao", "acao_plantar", 
 		"acao_regar", "acao_colher", "acao_capinar", "acao_adubar", "cmdPara"
 	};
 
 	private static final String[] _LITERAL_NAMES = {
-		null, "'verao'", "'primavera'", "'inverno'", "'outono'", "'hortel\u00E3'", 
-		"'alface'", "'abobora'", "'abobrinha'", "'couve'", "'beterraba'", "'batata'", 
-		"'morango'", "'pouco'", "'muito'", "'Dia'", "'M\u00EAs'", "'Ano'", "'slot1'", 
-		"'slot2'", "'slot3'", "'slot4'", "'todos'", "'Horta'", "':'", "'Fim horta'", 
-		"'Estacao'", "'Local'", "'Preparar solo'", "'Plantar'", "'Regar'", "'Colher'", 
-		"'Capinar'", "'Adubar'", "'para'", "'ate'", "'faca'", "'fim_para'"
+		null, "'Horta'", "':'", "'Fim horta'", "'verao'", "'primavera'", "'inverno'", 
+		"'outono'", "'hortel\u00E3'", "'alface'", "'abobora'", "'abobrinha'", 
+		"'couve'", "'beterraba'", "'batata'", "'morango'", "'pouco'", "'muito'", 
+		"'Dia'", "'M\u00EAs'", "'Ano'", "'slot1'", "'slot2'", "'slot3'", "'slot4'", 
+		"'todos'", "'Estacao'", "'Local'", "'Preparar solo'", "'Plantar'", "'Regar'", 
+		"'Colher'", "'Capinar'", "'Adubar'", "'para'", "'ate'", "'faca'", "'fim_para'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
 		null, null, null, null, null, null, null, null, null, null, null, null, 
@@ -97,6 +97,64 @@ public class hortParser extends Parser {
 		super(input);
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
+	public static class HortaContext extends ParserRuleContext {
+		public TerminalNode IDENT() { return getToken(hortParser.IDENT, 0); }
+		public DeclaracoesContext declaracoes() {
+			return getRuleContext(DeclaracoesContext.class,0);
+		}
+		public CorpoContext corpo() {
+			return getRuleContext(CorpoContext.class,0);
+		}
+		public HortaContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_horta; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof hortListener ) ((hortListener)listener).enterHorta(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof hortListener ) ((hortListener)listener).exitHorta(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof hortVisitor ) return ((hortVisitor<? extends T>)visitor).visitHorta(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final HortaContext horta() throws RecognitionException {
+		HortaContext _localctx = new HortaContext(_ctx, getState());
+		enterRule(_localctx, 0, RULE_horta);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(36);
+			match(T__0);
+			setState(37);
+			match(IDENT);
+			setState(38);
+			match(T__1);
+			setState(39);
+			declaracoes();
+			setState(40);
+			corpo();
+			setState(41);
+			match(T__2);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
 	public static class EstacaoContext extends ParserRuleContext {
 		public EstacaoContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -119,14 +177,14 @@ public class hortParser extends Parser {
 
 	public final EstacaoContext estacao() throws RecognitionException {
 		EstacaoContext _localctx = new EstacaoContext(_ctx, getState());
-		enterRule(_localctx, 0, RULE_estacao);
+		enterRule(_localctx, 2, RULE_estacao);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(36);
+			setState(43);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__1) | (1L << T__2) | (1L << T__3))) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__3) | (1L << T__4) | (1L << T__5) | (1L << T__6))) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -169,14 +227,14 @@ public class hortParser extends Parser {
 
 	public final SementeContext semente() throws RecognitionException {
 		SementeContext _localctx = new SementeContext(_ctx, getState());
-		enterRule(_localctx, 2, RULE_semente);
+		enterRule(_localctx, 4, RULE_semente);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(38);
+			setState(45);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__4) | (1L << T__5) | (1L << T__6) | (1L << T__7) | (1L << T__8) | (1L << T__9) | (1L << T__10) | (1L << T__11))) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__7) | (1L << T__8) | (1L << T__9) | (1L << T__10) | (1L << T__11) | (1L << T__12) | (1L << T__13) | (1L << T__14))) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -219,14 +277,14 @@ public class hortParser extends Parser {
 
 	public final IntensidadeContext intensidade() throws RecognitionException {
 		IntensidadeContext _localctx = new IntensidadeContext(_ctx, getState());
-		enterRule(_localctx, 4, RULE_intensidade);
+		enterRule(_localctx, 6, RULE_intensidade);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(40);
+			setState(47);
 			_la = _input.LA(1);
-			if ( !(_la==T__12 || _la==T__13) ) {
+			if ( !(_la==T__15 || _la==T__16) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -269,14 +327,14 @@ public class hortParser extends Parser {
 
 	public final Op_dataContext op_data() throws RecognitionException {
 		Op_dataContext _localctx = new Op_dataContext(_ctx, getState());
-		enterRule(_localctx, 6, RULE_op_data);
+		enterRule(_localctx, 8, RULE_op_data);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(42);
+			setState(49);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__14) | (1L << T__15) | (1L << T__16))) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__17) | (1L << T__18) | (1L << T__19))) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -319,14 +377,14 @@ public class hortParser extends Parser {
 
 	public final SlotContext slot() throws RecognitionException {
 		SlotContext _localctx = new SlotContext(_ctx, getState());
-		enterRule(_localctx, 8, RULE_slot);
+		enterRule(_localctx, 10, RULE_slot);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(44);
+			setState(51);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__17) | (1L << T__18) | (1L << T__19) | (1L << T__20) | (1L << T__21))) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__20) | (1L << T__21) | (1L << T__22) | (1L << T__23) | (1L << T__24))) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -334,64 +392,6 @@ public class hortParser extends Parser {
 				_errHandler.reportMatch(this);
 				consume();
 			}
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class HortaContext extends ParserRuleContext {
-		public TerminalNode IDENT() { return getToken(hortParser.IDENT, 0); }
-		public DeclaracoesContext declaracoes() {
-			return getRuleContext(DeclaracoesContext.class,0);
-		}
-		public CorpoContext corpo() {
-			return getRuleContext(CorpoContext.class,0);
-		}
-		public HortaContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_horta; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof hortListener ) ((hortListener)listener).enterHorta(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof hortListener ) ((hortListener)listener).exitHorta(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof hortVisitor ) return ((hortVisitor<? extends T>)visitor).visitHorta(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final HortaContext horta() throws RecognitionException {
-		HortaContext _localctx = new HortaContext(_ctx, getState());
-		enterRule(_localctx, 10, RULE_horta);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(46);
-			match(T__22);
-			setState(47);
-			match(IDENT);
-			setState(48);
-			match(T__23);
-			setState(49);
-			declaracoes();
-			setState(50);
-			corpo();
-			setState(51);
-			match(T__24);
 			}
 		}
 		catch (RecognitionException re) {
@@ -439,13 +439,13 @@ public class hortParser extends Parser {
 			setState(53);
 			match(T__25);
 			setState(54);
-			match(T__23);
+			match(T__1);
 			setState(55);
 			estacao();
 			setState(56);
 			match(T__26);
 			setState(57);
-			match(T__23);
+			match(T__1);
 			setState(58);
 			((DeclaracoesContext)_localctx).local = match(IDENT);
 			}
@@ -508,14 +508,14 @@ public class hortParser extends Parser {
 			setState(65);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__14) | (1L << T__15) | (1L << T__16) | (1L << T__33))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__17) | (1L << T__18) | (1L << T__19) | (1L << T__33))) != 0)) {
 				{
 				setState(63);
 				_errHandler.sync(this);
 				switch (_input.LA(1)) {
-				case T__14:
-				case T__15:
-				case T__16:
+				case T__17:
+				case T__18:
+				case T__19:
 					{
 					setState(61);
 					cmd();
@@ -596,7 +596,7 @@ public class hortParser extends Parser {
 			setState(68);
 			match(T__27);
 			setState(69);
-			match(T__23);
+			match(T__1);
 			setState(75);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
@@ -683,7 +683,7 @@ public class hortParser extends Parser {
 			setState(78);
 			periodo_tempo();
 			setState(79);
-			match(T__23);
+			match(T__1);
 			setState(83);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
@@ -1091,11 +1091,10 @@ public class hortParser extends Parser {
 	}
 
 	public static class CmdParaContext extends ParserRuleContext {
-		public List<Op_dataContext> op_data() {
-			return getRuleContexts(Op_dataContext.class);
-		}
-		public Op_dataContext op_data(int i) {
-			return getRuleContext(Op_dataContext.class,i);
+		public Token inicio;
+		public Token fim;
+		public Op_dataContext op_data() {
+			return getRuleContext(Op_dataContext.class,0);
 		}
 		public List<TerminalNode> NUM_INT() { return getTokens(hortParser.NUM_INT); }
 		public TerminalNode NUM_INT(int i) {
@@ -1138,15 +1137,15 @@ public class hortParser extends Parser {
 			setState(114);
 			op_data();
 			setState(115);
-			match(NUM_INT);
+			((CmdParaContext)_localctx).inicio = match(NUM_INT);
 			setState(116);
 			match(T__34);
 			setState(117);
-			op_data();
+			((CmdParaContext)_localctx).fim = match(NUM_INT);
 			setState(118);
-			match(NUM_INT);
-			setState(119);
 			match(T__35);
+			setState(119);
+			match(T__1);
 			{
 			setState(123);
 			_errHandler.sync(this);
@@ -1182,34 +1181,34 @@ public class hortParser extends Parser {
 		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3.\u0083\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
-		"\4\23\t\23\3\2\3\2\3\3\3\3\3\4\3\4\3\5\3\5\3\6\3\6\3\7\3\7\3\7\3\7\3\7"+
+		"\4\23\t\23\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\3\3\3\3\4\3\4\3\5\3\5\3\6\3\6"+
 		"\3\7\3\7\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\t\3\t\3\t\7\tB\n\t\f\t\16\tE\13"+
 		"\t\3\n\3\n\3\n\3\n\3\n\7\nL\n\n\f\n\16\nO\13\n\3\13\3\13\3\13\7\13T\n"+
 		"\13\f\13\16\13W\13\13\3\f\3\f\3\f\3\r\3\r\3\r\3\r\3\r\5\ra\n\r\3\16\3"+
 		"\16\3\16\3\16\3\17\3\17\3\17\3\17\3\20\3\20\3\20\3\21\3\21\3\21\3\22\3"+
 		"\22\3\22\3\23\3\23\3\23\3\23\3\23\3\23\3\23\3\23\7\23|\n\23\f\23\16\23"+
 		"\177\13\23\3\23\3\23\3\23\2\2\24\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36"+
-		" \"$\2\7\3\2\3\6\3\2\7\16\3\2\17\20\3\2\21\23\3\2\24\30\2{\2&\3\2\2\2"+
-		"\4(\3\2\2\2\6*\3\2\2\2\b,\3\2\2\2\n.\3\2\2\2\f\60\3\2\2\2\16\67\3\2\2"+
-		"\2\20>\3\2\2\2\22F\3\2\2\2\24P\3\2\2\2\26X\3\2\2\2\30`\3\2\2\2\32b\3\2"+
-		"\2\2\34f\3\2\2\2\36j\3\2\2\2 m\3\2\2\2\"p\3\2\2\2$s\3\2\2\2&\'\t\2\2\2"+
-		"\'\3\3\2\2\2()\t\3\2\2)\5\3\2\2\2*+\t\4\2\2+\7\3\2\2\2,-\t\5\2\2-\t\3"+
-		"\2\2\2./\t\6\2\2/\13\3\2\2\2\60\61\7\31\2\2\61\62\7(\2\2\62\63\7\32\2"+
-		"\2\63\64\5\16\b\2\64\65\5\20\t\2\65\66\7\33\2\2\66\r\3\2\2\2\678\7\34"+
-		"\2\289\7\32\2\29:\5\2\2\2:;\7\35\2\2;<\7\32\2\2<=\7(\2\2=\17\3\2\2\2>"+
-		"C\5\22\n\2?B\5\24\13\2@B\5$\23\2A?\3\2\2\2A@\3\2\2\2BE\3\2\2\2CA\3\2\2"+
-		"\2CD\3\2\2\2D\21\3\2\2\2EC\3\2\2\2FG\7\36\2\2GM\7\32\2\2HL\5\34\17\2I"+
-		"L\5 \21\2JL\5\"\22\2KH\3\2\2\2KI\3\2\2\2KJ\3\2\2\2LO\3\2\2\2MK\3\2\2\2"+
-		"MN\3\2\2\2N\23\3\2\2\2OM\3\2\2\2PQ\5\26\f\2QU\7\32\2\2RT\5\30\r\2SR\3"+
-		"\2\2\2TW\3\2\2\2US\3\2\2\2UV\3\2\2\2V\25\3\2\2\2WU\3\2\2\2XY\5\b\5\2Y"+
-		"Z\7)\2\2Z\27\3\2\2\2[a\5\32\16\2\\a\5\34\17\2]a\5\36\20\2^a\5 \21\2_a"+
-		"\5\"\22\2`[\3\2\2\2`\\\3\2\2\2`]\3\2\2\2`^\3\2\2\2`_\3\2\2\2a\31\3\2\2"+
-		"\2bc\7\37\2\2cd\5\4\3\2de\5\n\6\2e\33\3\2\2\2fg\7 \2\2gh\5\6\4\2hi\5\n"+
-		"\6\2i\35\3\2\2\2jk\7!\2\2kl\5\n\6\2l\37\3\2\2\2mn\7\"\2\2no\5\n\6\2o!"+
-		"\3\2\2\2pq\7#\2\2qr\5\n\6\2r#\3\2\2\2st\7$\2\2tu\5\b\5\2uv\7)\2\2vw\7"+
-		"%\2\2wx\5\b\5\2xy\7)\2\2y}\7&\2\2z|\5\30\r\2{z\3\2\2\2|\177\3\2\2\2}{"+
-		"\3\2\2\2}~\3\2\2\2~\u0080\3\2\2\2\177}\3\2\2\2\u0080\u0081\7\'\2\2\u0081"+
-		"%\3\2\2\2\tACKMU`}";
+		" \"$\2\7\3\2\6\t\3\2\n\21\3\2\22\23\3\2\24\26\3\2\27\33\2{\2&\3\2\2\2"+
+		"\4-\3\2\2\2\6/\3\2\2\2\b\61\3\2\2\2\n\63\3\2\2\2\f\65\3\2\2\2\16\67\3"+
+		"\2\2\2\20>\3\2\2\2\22F\3\2\2\2\24P\3\2\2\2\26X\3\2\2\2\30`\3\2\2\2\32"+
+		"b\3\2\2\2\34f\3\2\2\2\36j\3\2\2\2 m\3\2\2\2\"p\3\2\2\2$s\3\2\2\2&\'\7"+
+		"\3\2\2\'(\7(\2\2()\7\4\2\2)*\5\16\b\2*+\5\20\t\2+,\7\5\2\2,\3\3\2\2\2"+
+		"-.\t\2\2\2.\5\3\2\2\2/\60\t\3\2\2\60\7\3\2\2\2\61\62\t\4\2\2\62\t\3\2"+
+		"\2\2\63\64\t\5\2\2\64\13\3\2\2\2\65\66\t\6\2\2\66\r\3\2\2\2\678\7\34\2"+
+		"\289\7\4\2\29:\5\4\3\2:;\7\35\2\2;<\7\4\2\2<=\7(\2\2=\17\3\2\2\2>C\5\22"+
+		"\n\2?B\5\24\13\2@B\5$\23\2A?\3\2\2\2A@\3\2\2\2BE\3\2\2\2CA\3\2\2\2CD\3"+
+		"\2\2\2D\21\3\2\2\2EC\3\2\2\2FG\7\36\2\2GM\7\4\2\2HL\5\34\17\2IL\5 \21"+
+		"\2JL\5\"\22\2KH\3\2\2\2KI\3\2\2\2KJ\3\2\2\2LO\3\2\2\2MK\3\2\2\2MN\3\2"+
+		"\2\2N\23\3\2\2\2OM\3\2\2\2PQ\5\26\f\2QU\7\4\2\2RT\5\30\r\2SR\3\2\2\2T"+
+		"W\3\2\2\2US\3\2\2\2UV\3\2\2\2V\25\3\2\2\2WU\3\2\2\2XY\5\n\6\2YZ\7)\2\2"+
+		"Z\27\3\2\2\2[a\5\32\16\2\\a\5\34\17\2]a\5\36\20\2^a\5 \21\2_a\5\"\22\2"+
+		"`[\3\2\2\2`\\\3\2\2\2`]\3\2\2\2`^\3\2\2\2`_\3\2\2\2a\31\3\2\2\2bc\7\37"+
+		"\2\2cd\5\6\4\2de\5\f\7\2e\33\3\2\2\2fg\7 \2\2gh\5\b\5\2hi\5\f\7\2i\35"+
+		"\3\2\2\2jk\7!\2\2kl\5\f\7\2l\37\3\2\2\2mn\7\"\2\2no\5\f\7\2o!\3\2\2\2"+
+		"pq\7#\2\2qr\5\f\7\2r#\3\2\2\2st\7$\2\2tu\5\n\6\2uv\7)\2\2vw\7%\2\2wx\7"+
+		")\2\2xy\7&\2\2y}\7\4\2\2z|\5\30\r\2{z\3\2\2\2|\177\3\2\2\2}{\3\2\2\2}"+
+		"~\3\2\2\2~\u0080\3\2\2\2\177}\3\2\2\2\u0080\u0081\7\'\2\2\u0081%\3\2\2"+
+		"\2\tACKMU`}";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

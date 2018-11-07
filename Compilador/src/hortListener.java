@@ -7,6 +7,16 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface hortListener extends ParseTreeListener {
 	/**
+	 * Enter a parse tree produced by {@link hortParser#horta}.
+	 * @param ctx the parse tree
+	 */
+	void enterHorta(hortParser.HortaContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link hortParser#horta}.
+	 * @param ctx the parse tree
+	 */
+	void exitHorta(hortParser.HortaContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link hortParser#estacao}.
 	 * @param ctx the parse tree
 	 */
@@ -56,16 +66,6 @@ public interface hortListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitSlot(hortParser.SlotContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link hortParser#horta}.
-	 * @param ctx the parse tree
-	 */
-	void enterHorta(hortParser.HortaContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link hortParser#horta}.
-	 * @param ctx the parse tree
-	 */
-	void exitHorta(hortParser.HortaContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link hortParser#declaracoes}.
 	 * @param ctx the parse tree

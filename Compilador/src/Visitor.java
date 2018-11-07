@@ -1,10 +1,13 @@
 import org.antlr.v4.runtime.CommonTokenStream;
 
-//TODO: Pensar no caso de ja ter inicializado todos, mas usar só em slot .. (nao precisa ficar regando todos se nao ta usando todos. pensar nisso)
-//TODO: dar erro semantico se o regado chegar em -1
-
 
 //TODO: acho que nao tem nada feito sobre ano ainda
+
+// TODO: colocar onde decremente o regado do solo as verificacoes de cada semente
+
+//TODO: exemplo do solo seco (3 - erro semantico), mostra um problema na recuperacao de erro.
+
+//TODO: exemplo pula dia (4 - erro semantico), precisa verificar quantos dias passou depois daquilo, para diminuir o regado daquela quantidade
 
 public class Visitor extends hortBaseVisitor {
 
@@ -48,7 +51,13 @@ public class Visitor extends hortBaseVisitor {
             n = 0;
         else
             n = Integer.parseInt(slot.substring(slot.length() - 1));
+
         rh.setSlot_capinado(n, true);
+
+        // Entao precisa falar que nao está mais adubado nem regado
+        rh.setSlot_adubado(n,false);
+        rh.setSlot_regado(n,0);
+
         super.visitAcao_capinar(context);
         return null;
     }
@@ -66,12 +75,18 @@ public class Visitor extends hortBaseVisitor {
 
         if (rh.getSlot_capinado(n)) {
             rh.setSlot_adubado(n, true);
+
+            // Entao precisa falar que nao está mais regado
+            rh.setSlot_regado(n,0);
         } else {
             System.out.println("Linha " + context.getStart().getLine() + ": solo nao capinado");
             rh.setSlot_capinado(n, true);
             rh.setSlot_adubado(n, true);
             rh.setPerdeu_jogo(true);
         }
+
+
+
         super.visitAcao_adubar(context);
         return null;
     }
@@ -82,10 +97,12 @@ public class Visitor extends hortBaseVisitor {
         //System.out.println("vou regar");
         String slot = context.slot().getText();
         int n;
+
         if (slot.equals("todos"))
             n = 0;
         else
             n = Integer.parseInt(slot.substring(slot.length() - 1));
+
         if (rh.getSlot_adubado(n)) {
             int qtd;
             if (context.intensidade().getText().equals("muito")) {
@@ -99,6 +116,8 @@ public class Visitor extends hortBaseVisitor {
             }
         } else {
             System.out.println("Linha " + context.getStart().getLine() + ": solo nao adubado");
+
+            //Recuperacao de erro
             rh.setSlot_adubado(n, true);
             rh.setPerdeu_jogo(true);
             int qtd;
@@ -117,15 +136,19 @@ public class Visitor extends hortBaseVisitor {
         return null;
     }
 
-    //TODO isso aqui por equanto ta tratando so dias, depois tem que fazer pra mes e ano
+    //TODO isso aqui por equanto ta tratando so dias, depois tem que fazer pra mes e ano. Precisa resolver problema do loop antes
 
     @Override
     public Object visitPeriodo_tempo(hortParser.Periodo_tempoContext context) {
 
+
         if (rh.getQtd_dias() < Integer.parseInt(context.NUM_INT().getText())) { // Verificando se nao ta voltando no tempo
             rh.setQtd_dias(Integer.parseInt(context.NUM_INT().getText()));
-            if (context.op_data().getText().equals("Dia"))
-                rh.decrementar_dia();
+            if (context.op_data().getText().equals("Dia")) {
+                if (!rh.decrementar_dia()) {
+                    System.out.println("Linha " + context.getStart().getLine() + ": solo seco");
+                }
+            }
         } else {
             System.out.println("Linha " + context.getStart().getLine() + ": data inválida");
             rh.setPerdeu_jogo(true);
@@ -290,30 +313,39 @@ public class Visitor extends hortBaseVisitor {
     @Override
     public Object visitCmdPara(hortParser.CmdParaContext context){
         System.out.println("to no para");
-        //int inicio = Integer.parseInt(context.inicio.getText());
-        //int fim = Integer.parseInt(context.fim.getText());
+        int inicio = Integer.parseInt(context.inicio.getText());
+        int fim = Integer.parseInt(context.fim.getText());
 
-        //if (context.op_data().getText().equals("Dia")){ // se o para for percorrer entre os dias
-//            for(int i=inicio;i<fim;i++){
-//                //visitAcao(context.acao(i)); //TODO: TA DANDO ERRADO
-//            }
-//        }
-        //TODO: ainda tem que tratar o caso de ser mes ou ano
+        if (context.op_data().getText().equals("Dia")){ // se o para for percorrer entre os dias
+            for(int i=inicio;i<fim;i++){
+                System.out.println("preciso chamar acao " + i);
+                //visitAcao(context.acao(i)); //TODO: Ta dando exception
+                //TODO: tambem colocar que foi passando os dias -> decrementar o regado daquela quantidade.. nao ter conflito com o decremento do solo no dia normal
+            }
+        }
+        //TODO: ainda tem que tratar o caso de ser mes ou ano (depois de resolver problema do loop)
 
         super.visitCmdPara(context);
         return null;
     }
 
-//    @Override
-//    public Object visitAcao(hortParser.AcaoContext context){
-//        System.out.println("to na acao");
-//
-//        if(context.acao_regar()!=null) {
-//            System.out.println("queria regar");
-//            visitAcao_regar(context.acao_regar());
+    @Override
+    public Object visitAcao(hortParser.AcaoContext context){
+        //System.out.println("to na acao");
+
+//        try {
+//            if(context.acao_regar()==null) {
+//                System.out.println("nao era regar");
+//            }
 //        }
+//        catch (NullPointerException e){
+//            System.out.println("deu exception mas quero regar");
+//            visitAcao_regar(context.acao_regar());
 //
-//        super.visitAcao(context);
-//        return null;
-//    }
+//        }
+
+        super.visitAcao(context);
+
+        return null;
+    }
 }

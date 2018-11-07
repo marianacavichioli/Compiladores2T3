@@ -1,0 +1,18 @@
+Horta boa:
+    Estacao: outono
+    Local: ensolarado
+
+    Preparar solo :
+        Capinar todos
+        Adubar todos
+        Regar muito todos
+    Dia 1:
+    	Regar pouco todos
+    Dia 2:
+    	Regar pouco todos
+    Dia 3:
+    Dia 4:
+    Dia 5:
+    Dia 6:
+
+Fim horta

@@ -15,6 +15,18 @@ public class hortBaseListener implements hortListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterHorta(hortParser.HortaContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitHorta(hortParser.HortaContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterEstacao(hortParser.EstacaoContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -70,18 +82,6 @@ public class hortBaseListener implements hortListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitSlot(hortParser.SlotContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterHorta(hortParser.HortaContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitHorta(hortParser.HortaContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

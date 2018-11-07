@@ -9,8 +9,8 @@ Horta legal:
     Dia 1 :
         Plantar alface slot1
 
-    para Dia 1 ate 5 faca :
-	Regar pouco slot1
+    para Dia 2 ate 5 faca :
+	   Regar pouco slot1
     fim_para
 
 Fim horta

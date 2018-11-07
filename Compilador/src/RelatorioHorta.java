@@ -188,31 +188,36 @@ public class RelatorioHorta {
 
     public boolean incrementaSlot_regado(int i, int qtd) {
         if(i <= QTD_MAX_SLOTS) {
-            if(i==0){ // caso em que foi pedido todos
+            if(i==0) { // caso em que foi pedido todos
                 boolean pode_incrementar = true;
-                for(int j=0;j<QTD_MAX_SLOTS;j++){
-
-                    if (this.slot_regado[j] == 0){ // caso o slot nao tenha sido regado ainda
-                        this.slot_regado[j] += qtd;
-                        return true;
-                    }
+                for (int j = 0; j < QTD_MAX_SLOTS; j++) {
 
                     this.slot_regado[j] += qtd;
 
-                    // verifica se pode regar os slots de acordo com a semente
+                    if (this.semente_slot[j] != null) { // caso o slot ja tenha sido plantado
 
-                    if (this.slot_regado[j] >= 1 && (this.semente_slot[j].equals("alface") || this.semente_slot[j].equals("hortelã") || this.semente_slot[j].equals("batata"))) { // Casos específicos para cada semente
-                        pode_incrementar = false;
-                        this.slot_regado[j] = 1;
+                        // verifica se pode regar os slots de acordo com a semente
+
+                        if (this.slot_regado[j] >= 1 && (this.semente_slot[j].equals("alface") || this.semente_slot[j].equals("hortelã") || this.semente_slot[j].equals("batata"))) { // Casos específicos para cada semente
+                            pode_incrementar = false;
+                            this.slot_regado[j] = 1;
+                            break;
+                        } else if (this.slot_regado[j] >= 2 && (this.semente_slot[j].equals("couve") || this.semente_slot[j].equals("beterraba") || this.semente_slot[j].equals("morango") || this.semente_slot[j].equals("abobora") || this.semente_slot[j].equals("abobrinha"))) {
+                            pode_incrementar = false;
+                            this.slot_regado[j] = 2;
+                            break;
+                        } else {
+                            pode_incrementar = false;
+                            this.slot_regado[j] = 3;
+                            break;
+                        }
                     }
-                    else if (this.slot_regado[j] >= 2 && (this.semente_slot[j].equals("couve") || this.semente_slot[j].equals("beterraba") || this.semente_slot[j].equals("morango") || this.semente_slot[j].equals("abobora") || this.semente_slot[j].equals("abobrinha"))){
-                        pode_incrementar = false;
-                        this.slot_regado[j] = 2;
-                    }
-                    else{
-                        System.out.println("entrei");
-                        pode_incrementar = false;
-                        this.slot_regado[j] = 3;
+                    else { // caso esteja sem semente
+                        if(this.slot_regado[j] > 2){
+                            pode_incrementar = false;
+                            this.slot_regado[j] = 3;
+                            break;
+                        }
                     }
                 }
                 return pode_incrementar;
@@ -245,8 +250,14 @@ public class RelatorioHorta {
         boolean pode_decrementar = true;
         for(int i=0; i < QTD_MAX_SLOTS; i ++){
             this.slot_regado[i] -= 1;
-            if(this.slot_regado[i] < 0){ // Caso algum slot fique menor do que 0, indica que nao podia decrementar
-                pode_decrementar = false;
+            if(this.slot_regado[i] < 0){ // Caso algum slot fique menor do que 0
+
+                if(this.semente_slot[i] != null){ // se ele tivesse semente, indica que nao podia decrementar
+                    pode_decrementar = false;
+                }
+                else{ // se ele nao tem nada plantado, zera o regado
+                    this.slot_regado[i] = 0;
+                }
             }
         }
         return pode_decrementar;
