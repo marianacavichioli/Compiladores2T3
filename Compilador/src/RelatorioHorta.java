@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class RelatorioHorta {
 
@@ -249,17 +250,39 @@ public class RelatorioHorta {
     }
 
     public boolean decrementar_dia(){
+
         boolean pode_decrementar = true;
         for(int i=0; i < QTD_MAX_SLOTS; i ++){
-            this.slot_regado[i] -= 1;
-            if(this.slot_regado[i] < 0){ // Caso algum slot fique menor do que 0
 
+            this.slot_regado[i] -= 1;
+
+            if(this.slot_regado[i] < 0){ // Caso algum slot fique menor do que 0
                 if(this.semente_slot[i] != null){ // se ele tivesse semente, indica que nao podia decrementar
                     pode_decrementar = false;
                 }
                 else{ // se ele nao tem nada plantado, zera o regado
                     this.slot_regado[i] = 0;
                 }
+            }
+
+            //Sementes que necessitam de solo moderadamente úmido = 1.
+            else if((this.slot_regado[i] < 1) &&
+                    (Objects.equals(this.semente_slot[i], "hortelã") ||
+                            Objects.equals(this.semente_slot[i], "alface") ||
+                            Objects.equals(this.semente_slot[i], "batata"))){
+
+                pode_decrementar = false;
+            }
+
+            //Sementes que necessitam de solo sempre úmido = 2.
+            else if((this.slot_regado[i] < 2) &&
+                    (Objects.equals(this.semente_slot[i], "couve") ||
+                            Objects.equals(this.semente_slot[i], "beterraba") ||
+                            Objects.equals(this.semente_slot[i], "morango") ||
+                            Objects.equals(this.semente_slot[i], "abobora") ||
+                            Objects.equals(this.semente_slot[i], "abobrinha"))){
+
+                pode_decrementar = false;
             }
         }
         return pode_decrementar;

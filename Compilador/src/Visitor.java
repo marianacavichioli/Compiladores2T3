@@ -4,7 +4,7 @@ import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 //TODO: acho que nao tem nada feito sobre ano ainda
 
-// TODO: colocar onde decremente o regado do solo as verificacoes de cada semente
+//colocar onde decremente o regado do solo as verificacoes de cada semente - já fiz
 
 //TODO: exemplo do solo seco (3 - erro semantico), mostra um problema na recuperacao de erro.
 
@@ -66,7 +66,6 @@ public class Visitor extends hortBaseVisitor {
 
     @Override
     public Object visitAcao_adubar(hortParser.Acao_adubarContext context) {
-        System.out.println("adubando");
         String slot = context.slot().getText();
 
         int n;
@@ -143,11 +142,14 @@ public class Visitor extends hortBaseVisitor {
     @Override
     public Object visitPeriodo_tempo(hortParser.Periodo_tempoContext context) {
 
+        System.out.println("Dia: " + rh.getQtd_dias());
+
         if (rh.getQtd_dias() < Integer.parseInt(context.NUM_INT().getText())) { // Verificando se nao ta voltando no tempo
             rh.setQtd_dias(Integer.parseInt(context.NUM_INT().getText()));
             if (context.op_data().getText().equals("Dia")) {
                 if (!rh.decrementar_dia()) {
-                    System.out.println("Linha " + context.getStart().getLine() + ": solo seco");
+                    System.out.println("Linha " + context.getStart().getLine() + ": solo seco para a semente plantada" );
+                    rh.setPerdeu_jogo(true);
                 }
             }
         } else {

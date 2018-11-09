@@ -47,5 +47,5 @@ acao_capinar : 'Capinar' slot ;
 
 acao_adubar : 'Adubar' slot ;
 
-cmdPara : 'para' op_data inicio=NUM_INT 'ate' fim=NUM_INT 'faca' ':' (acao*) 'fim_para';
+cmdPara : 'para' op_data inicio=NUM_INT 'ate' fim=NUM_INT 'faca' ':' acao* 'fim_para';
 
