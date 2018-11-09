@@ -224,6 +224,7 @@ public class RelatorioHorta {
             }
             else { // caso em que foi pedido um slot especifico
 
+
                 if (this.slot_regado[i-1] == 0){ // caso o slot nao tenha sido regado ainda
                     this.slot_regado[i-1] += qtd;
                     return true;
@@ -232,6 +233,7 @@ public class RelatorioHorta {
                 this.slot_regado[i-1] += qtd;
 
                 // verifica se pode regar os slots de acordo com a semente
+
 
                 if (this.slot_regado[i-1] >= 1 && (this.semente_slot[i-1].equals("alface") || this.semente_slot[i-1].equals("hortelã") || this.semente_slot[i-1].equals("batata"))) { // Casos específicos para cada semente
                     this.slot_regado[i-1] = 3;

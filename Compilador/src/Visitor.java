@@ -1,4 +1,5 @@
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 
 //TODO: acho que nao tem nada feito sobre ano ainda
@@ -65,6 +66,7 @@ public class Visitor extends hortBaseVisitor {
 
     @Override
     public Object visitAcao_adubar(hortParser.Acao_adubarContext context) {
+        System.out.println("adubando");
         String slot = context.slot().getText();
 
         int n;
@@ -140,7 +142,6 @@ public class Visitor extends hortBaseVisitor {
 
     @Override
     public Object visitPeriodo_tempo(hortParser.Periodo_tempoContext context) {
-
 
         if (rh.getQtd_dias() < Integer.parseInt(context.NUM_INT().getText())) { // Verificando se nao ta voltando no tempo
             rh.setQtd_dias(Integer.parseInt(context.NUM_INT().getText()));
@@ -318,8 +319,10 @@ public class Visitor extends hortBaseVisitor {
 
         if (context.op_data().getText().equals("Dia")){ // se o para for percorrer entre os dias
             for(int i=inicio;i<fim;i++){
-                System.out.println("preciso chamar acao " + i);
-                //visitAcao(context.acao(i)); //TODO: Ta dando exception
+                System.out.println("preciso chamar acao para o dia " + i);
+                for(hortParser.AcaoContext acao: context.acao()) {
+                    visitAcao(acao);
+                }
                 //TODO: tambem colocar que foi passando os dias -> decrementar o regado daquela quantidade.. nao ter conflito com o decremento do solo no dia normal
             }
         }
@@ -329,23 +332,4 @@ public class Visitor extends hortBaseVisitor {
         return null;
     }
 
-    @Override
-    public Object visitAcao(hortParser.AcaoContext context){
-        //System.out.println("to na acao");
-
-//        try {
-//            if(context.acao_regar()==null) {
-//                System.out.println("nao era regar");
-//            }
-//        }
-//        catch (NullPointerException e){
-//            System.out.println("deu exception mas quero regar");
-//            visitAcao_regar(context.acao_regar());
-//
-//        }
-
-        super.visitAcao(context);
-
-        return null;
-    }
 }
