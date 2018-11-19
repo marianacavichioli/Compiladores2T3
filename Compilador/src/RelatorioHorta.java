@@ -197,26 +197,34 @@ public class RelatorioHorta {
 
                     if (this.semente_slot[j] != null) { // caso o slot ja tenha sido plantado
 
+                        //System.out.println("vou regar slot " + j + " ele ja tem " + this.slot_regado[j]);
+
                         // verifica se pode regar os slots de acordo com a semente
 
-                        if (this.slot_regado[j] >= 1 && (this.semente_slot[j].equals("alface") || this.semente_slot[j].equals("hortelã") || this.semente_slot[j].equals("batata"))) { // Casos específicos para cada semente
+                        if (this.slot_regado[j] > 2 && (this.semente_slot[j].equals("alface") || this.semente_slot[j].equals("hortelã") || this.semente_slot[j].equals("batata"))) { // Casos específicos para cada semente
                             pode_incrementar = false;
                             this.slot_regado[j] = 1;
+                            System.out.println("entrei aqui 1");
                             break;
-                        } else if (this.slot_regado[j] >= 2 && (this.semente_slot[j].equals("couve") || this.semente_slot[j].equals("beterraba") || this.semente_slot[j].equals("morango") || this.semente_slot[j].equals("abobora") || this.semente_slot[j].equals("abobrinha"))) {
+                        } else if (this.slot_regado[j] > 3 && (this.semente_slot[j].equals("couve") || this.semente_slot[j].equals("beterraba") || this.semente_slot[j].equals("morango") || this.semente_slot[j].equals("abobora") || this.semente_slot[j].equals("abobrinha"))) {
                             pode_incrementar = false;
                             this.slot_regado[j] = 2;
-                            break;
-                        } else {
-                            pode_incrementar = false;
-                            this.slot_regado[j] = 3;
+                            System.out.println("entrei aqui 2");
                             break;
                         }
+//                        else {
+//                            pode_incrementar = false;
+//                            this.slot_regado[j] = 3;
+//                            System.out.println("entrei aqui 3 " + this.semente_slot[j]);
+//                            break;
+//                        }
                     }
                     else { // caso esteja sem semente
-                        if(this.slot_regado[j] > 2){
+                        //System.out.println("vou regar slot " + j + " ele ja tem " + this.slot_regado[j]);
+                        if(this.slot_regado[j] > 3){
                             pode_incrementar = false;
                             this.slot_regado[j] = 3;
+                            System.out.println("entrei aqui 4");
                             break;
                         }
                     }
@@ -236,17 +244,21 @@ public class RelatorioHorta {
                 // verifica se pode regar os slots de acordo com a semente
 
 
-                if (this.slot_regado[i-1] >= 1 && (this.semente_slot[i-1].equals("alface") || this.semente_slot[i-1].equals("hortelã") || this.semente_slot[i-1].equals("batata"))) { // Casos específicos para cada semente
+                //System.out.println("vou regar slot " + i + " ele ja tem " + this.slot_regado[i-1]);
+
+                if (this.slot_regado[i-1] > 2 && (this.semente_slot[i-1].equals("alface") || this.semente_slot[i-1].equals("hortelã") || this.semente_slot[i-1].equals("batata"))) { // Casos específicos para cada semente
+                    //System.out.println("entrei aqui");
                     this.slot_regado[i-1] = 3;
                     return false;
                 }
-                else if (this.slot_regado[i-1] >= 2 && (this.semente_slot[i-1].equals("couve") || this.semente_slot[i-1].equals("beterraba") || this.semente_slot[i-1].equals("morango") || this.semente_slot[i-1].equals("abobora") || this.semente_slot[i-1].equals("abobrinha"))){
+                else if (this.slot_regado[i-1] > 3 && (this.semente_slot[i-1].equals("couve") || this.semente_slot[i-1].equals("beterraba") || this.semente_slot[i-1].equals("morango") || this.semente_slot[i-1].equals("abobora") || this.semente_slot[i-1].equals("abobrinha"))){
                     this.slot_regado[i-1] = 3;
                     return false;
                 }
             }
         }
-        return false;
+        //System.out.println("entrei aqui");
+        return true;
     }
 
     public boolean decrementar_dia(){

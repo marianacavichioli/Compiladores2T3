@@ -45,6 +45,27 @@ public class Visitor extends hortBaseVisitor {
     }
 
     @Override
+    public Object visitCmd(hortParser.CmdContext context){
+
+        super.visitCmd(context);
+
+//        System.out.println("slot1 regado " + rh.getSlot_regado(0) + " plantado " + rh.getSemente_slot(0));
+//        System.out.println("slot2 regado " + rh.getSlot_regado(1) + " plantado " + rh.getSemente_slot(1));
+//        System.out.println("slot3 regado " + rh.getSlot_regado(2) + " plantado " + rh.getSemente_slot(2));
+//        System.out.println("slot4 regado " + rh.getSlot_regado(3) + " plantado " + rh.getSemente_slot(3));
+
+        if (!rh.decrementar_dia()) {
+            System.out.println("Linha " + context.getStart().getLine() + ": solo seco para a semente plantada");
+            rh.setPerdeu_jogo(true);
+        }
+//        else
+//            System.out.println("decrementei dia");
+
+
+        return null;
+    }
+
+    @Override
     public Object visitAcao_capinar(hortParser.Acao_capinarContext context) {
         String slot = context.slot().getText();
         int n;
@@ -111,6 +132,7 @@ public class Visitor extends hortBaseVisitor {
             } else {
                 qtd = 1;
             }
+            //System.out.println("vou regar " + n + " qtd " + qtd);
             if (!rh.incrementaSlot_regado(n, qtd)) {
                 System.out.println("Linha " + context.getStart().getLine() + ": solo encharcado");
                 rh.setPerdeu_jogo(true);
@@ -119,6 +141,7 @@ public class Visitor extends hortBaseVisitor {
             System.out.println("Linha " + context.getStart().getLine() + ": solo nao adubado");
 
             //Recuperacao de erro
+            System.out.println("recuperacao erro");
             rh.setSlot_adubado(n, true);
             rh.setPerdeu_jogo(true);
             int qtd;
@@ -142,19 +165,23 @@ public class Visitor extends hortBaseVisitor {
     @Override
     public Object visitPeriodo_tempo(hortParser.Periodo_tempoContext context) {
 
-        System.out.println("Dia: " + rh.getQtd_dias());
+        //System.out.println("Dia: " + rh.getQtd_dias());
 
         if (rh.getQtd_dias() < Integer.parseInt(context.NUM_INT().getText())) { // Verificando se nao ta voltando no tempo
             rh.setQtd_dias(Integer.parseInt(context.NUM_INT().getText()));
-            if (context.op_data().getText().equals("Dia")) {
-                if (!rh.decrementar_dia()) {
-                    System.out.println("Linha " + context.getStart().getLine() + ": solo seco para a semente plantada" );
-                    rh.setPerdeu_jogo(true);
-                }
+            if (!context.op_data().getText().equals("Dia")) {
+                System.out.println("Linha " + context.getStart().getLine() + ": data inválida");
+                rh.setPerdeu_jogo(true);
             }
-        } else {
-            System.out.println("Linha " + context.getStart().getLine() + ": data inválida");
-            rh.setPerdeu_jogo(true);
+//            if (context.op_data().getText().equals("Dia")) {
+//                if (!rh.decrementar_dia()) {
+//                    System.out.println("Linha " + context.getStart().getLine() + ": solo seco para a semente plantada" );
+//                    rh.setPerdeu_jogo(true);
+//                }
+//            }
+//        } else {
+//            System.out.println("Linha " + context.getStart().getLine() + ": data inválida");
+//            rh.setPerdeu_jogo(true);
         }
 
         super.visitPeriodo_tempo(context);
@@ -164,6 +191,8 @@ public class Visitor extends hortBaseVisitor {
 
     @Override
     public Object visitAcao_plantar(hortParser.Acao_plantarContext context) {
+
+        //System.out.println("entrei plantar");
 
         //variáveis para simplificar o código
         boolean primavera = rh.getEstacao_atual().equals("primavera");
@@ -225,6 +254,8 @@ public class Visitor extends hortBaseVisitor {
 
     @Override
     public Object visitAcao_colher(hortParser.Acao_colherContext context) {
+
+        //System.out.println("entrei colher");
 
         String slot = context.slot().getText();
         String semente; // indica a semente do slot em questao

@@ -5,7 +5,7 @@ Horta boa:
     Preparar solo :
         Capinar todos
         Adubar todos
-        Regar muito todos
+        Regar pouco todos
     Dia 1:
     	Regar pouco todos
     	Plantar alface slot1
@@ -14,7 +14,7 @@ Horta boa:
     Dia 3:
     	Capinar slot1
     	Adubar slot1
-    	Regar pouco slot1
+    	Regar muito slot1
     	Plantar alface slot1
     Dia 4:
     	Colher slot1

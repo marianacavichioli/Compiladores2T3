@@ -7,8 +7,8 @@ Horta legal:
         Adubar todos
         Regar pouco todos
     Dia 1 :
-        Regar pouco slot1
         Plantar alface slot1
+        Regar pouco slot1
     Dia 2 :
         Colher slot1
 Fim horta

@@ -5,7 +5,7 @@ Horta boa:
     Preparar solo :
         Capinar todos
         Adubar todos
-        Regar muito todos
+        Regar pouco todos
     Dia 1:
     	Regar pouco todos
     Dia 2:
