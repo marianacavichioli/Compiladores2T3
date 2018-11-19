@@ -7,8 +7,8 @@ Horta legal:
         Adubar todos
         Regar pouco todos
     Dia 1 :
-        Regar pouco slot1
         Plantar beterraba slot1
+        Regar muito slot1
     Dia 3 :
         Regar pouco slot1
     Dia 4 :

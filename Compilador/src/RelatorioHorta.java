@@ -15,12 +15,24 @@ public class RelatorioHorta {
     private boolean slot_adubado[] = new boolean[QTD_MAX_SLOTS];
     private int slot_regado[] = new int[QTD_MAX_SLOTS]; // 0 para nao regado, 1 para regado pouco, 2 para regado muito e 3 para encharcado
 
-    private int qtd_dias, qtd_meses;
+    private int qtd_dias;
+    private int qtd_meses;
+
+    public int getDias_passados() {
+        return dias_passados;
+    }
+
+    public void setDias_passados(int dias_passados) {
+        this.dias_passados = dias_passados;
+    }
+
+    private int dias_passados;
 
     private List<String> colheita = new ArrayList<String>();
 
     public RelatorioHorta(){
         this.qtd_dias = 0;
+        this.dias_passados = 0;
         for(int i=0;i<QTD_MAX_SLOTS;i++){
             slot_capinado[i] = false;
             slot_adubado[i] = false;
@@ -246,8 +258,10 @@ public class RelatorioHorta {
 
                 //System.out.println("vou regar slot " + i + " ele ja tem " + this.slot_regado[i-1]);
 
+                //System.out.println("vou regar semente " + this.semente_slot[i-1]);
+
                 if (this.slot_regado[i-1] > 2 && (this.semente_slot[i-1].equals("alface") || this.semente_slot[i-1].equals("hortelã") || this.semente_slot[i-1].equals("batata"))) { // Casos específicos para cada semente
-                    //System.out.println("entrei aqui");
+                    System.out.println("entrei aqui");
                     this.slot_regado[i-1] = 3;
                     return false;
                 }

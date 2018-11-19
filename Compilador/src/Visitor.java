@@ -4,11 +4,13 @@ import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 //TODO: acho que nao tem nada feito sobre ano ainda
 
+//TODO: nao tem nada feito sobre o local que foi plantado, msa acho que podemos descosiderar isso
+
 //colocar onde decremente o regado do solo as verificacoes de cada semente - já fiz
 
 //TODO: exemplo do solo seco (3 - erro semantico), mostra um problema na recuperacao de erro.
 
-//TODO: exemplo pula dia (4 - erro semantico), precisa verificar quantos dias passou depois daquilo, para diminuir o regado daquela quantidade
+//exemplo pula dia (4 - erro semantico), precisa verificar quantos dias passou depois daquilo, para diminuir o regado daquela quantidade - já fiz
 
 public class Visitor extends hortBaseVisitor {
 
@@ -53,15 +55,19 @@ public class Visitor extends hortBaseVisitor {
 //        System.out.println("slot2 regado " + rh.getSlot_regado(1) + " plantado " + rh.getSemente_slot(1));
 //        System.out.println("slot3 regado " + rh.getSlot_regado(2) + " plantado " + rh.getSemente_slot(2));
 //        System.out.println("slot4 regado " + rh.getSlot_regado(3) + " plantado " + rh.getSemente_slot(3));
+//
+//        System.out.println("dias passados " + rh.getDias_passados());
 
-        if (!rh.decrementar_dia()) {
-            System.out.println("Linha " + context.getStart().getLine() + ": solo seco para a semente plantada");
-            rh.setPerdeu_jogo(true);
+        for (int i = rh.getDias_passados(); i > 0; i--){
+            //System.out.println("entrei for");
+
+            if (!rh.decrementar_dia()) {
+                System.out.println("Linha " + context.getStart().getLine() + ": solo seco para a semente plantada");
+                rh.setPerdeu_jogo(true);
+            }
+//            else
+//               System.out.println("decrementei dia");
         }
-//        else
-//            System.out.println("decrementei dia");
-
-
         return null;
     }
 
@@ -167,21 +173,24 @@ public class Visitor extends hortBaseVisitor {
 
         //System.out.println("Dia: " + rh.getQtd_dias());
 
+        rh.setDias_passados(0);
+
         if (rh.getQtd_dias() < Integer.parseInt(context.NUM_INT().getText())) { // Verificando se nao ta voltando no tempo
-            rh.setQtd_dias(Integer.parseInt(context.NUM_INT().getText()));
+            //System.out.println("Dia: " + rh.getQtd_dias());
             if (!context.op_data().getText().equals("Dia")) {
                 System.out.println("Linha " + context.getStart().getLine() + ": data inválida");
                 rh.setPerdeu_jogo(true);
+            } else {
+
+
+                //System.out.println("Dias do texto : " + context.NUM_INT().getText() + " dias no programa " + rh.getQtd_dias());
+                rh.setDias_passados(Integer.parseInt(context.NUM_INT().getText()) - rh.getQtd_dias());
+
+                //System.out.println("Dias passados: " + rh.getDias_passados());
+
+                rh.setQtd_dias(Integer.parseInt(context.NUM_INT().getText()));
+
             }
-//            if (context.op_data().getText().equals("Dia")) {
-//                if (!rh.decrementar_dia()) {
-//                    System.out.println("Linha " + context.getStart().getLine() + ": solo seco para a semente plantada" );
-//                    rh.setPerdeu_jogo(true);
-//                }
-//            }
-//        } else {
-//            System.out.println("Linha " + context.getStart().getLine() + ": data inválida");
-//            rh.setPerdeu_jogo(true);
         }
 
         super.visitPeriodo_tempo(context);
