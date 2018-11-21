@@ -6,9 +6,16 @@ public class RelatorioHorta {
 
     final int QTD_MAX_SLOTS = 4;
 
-    private String nome, estacao_base, estacao_atual, local;
-    private String semente_slot[] = new String[QTD_MAX_SLOTS]; // lembrar sempre que se receber slot 1, é o indice 0 (tratar isso em todos os métodos)
+    int QTD_DIAS_POR_ESTACAO = 15;
 
+    private String nome, estacao_base, estacao_atual, local;
+    private String semente_slot[] = new String[QTD_MAX_SLOTS]; // lembrar sempre que se receber slot 1, é o indice 0 (isso é tratado em todos os métodos)
+
+
+
+    private int qtd_dias_plantado_slot[] = new int[QTD_MAX_SLOTS]; // Indica quantos dias se passaram desde que foi plantado em cada slot
+
+    private int pontuacao;
     private boolean perdeu_jogo = false; // variavel que indica se perdeu o jogo
 
     private boolean slot_capinado[] = new boolean[QTD_MAX_SLOTS];
@@ -16,16 +23,6 @@ public class RelatorioHorta {
     private int slot_regado[] = new int[QTD_MAX_SLOTS]; // 0 para nao regado, 1 para regado pouco, 2 para regado muito e 3 para encharcado
 
     private int qtd_dias;
-    private int qtd_meses;
-
-    public int getDias_passados() {
-        return dias_passados;
-    }
-
-    public void setDias_passados(int dias_passados) {
-        this.dias_passados = dias_passados;
-    }
-
     private int dias_passados;
 
     private List<String> colheita = new ArrayList<String>();
@@ -33,10 +30,12 @@ public class RelatorioHorta {
     public RelatorioHorta(){
         this.qtd_dias = 0;
         this.dias_passados = 0;
+        this.pontuacao = 0;
         for(int i=0;i<QTD_MAX_SLOTS;i++){
             slot_capinado[i] = false;
             slot_adubado[i] = false;
             slot_regado[i] = 0;
+            qtd_dias_plantado_slot[i] = 0;
         }
     }
 
@@ -216,12 +215,10 @@ public class RelatorioHorta {
                         if (this.slot_regado[j] > 2 && (this.semente_slot[j].equals("alface") || this.semente_slot[j].equals("hortelã") || this.semente_slot[j].equals("batata"))) { // Casos específicos para cada semente
                             pode_incrementar = false;
                             this.slot_regado[j] = 1;
-                            System.out.println("entrei aqui 1");
                             break;
                         } else if (this.slot_regado[j] > 3 && (this.semente_slot[j].equals("couve") || this.semente_slot[j].equals("beterraba") || this.semente_slot[j].equals("morango") || this.semente_slot[j].equals("abobora") || this.semente_slot[j].equals("abobrinha"))) {
                             pode_incrementar = false;
                             this.slot_regado[j] = 2;
-                            System.out.println("entrei aqui 2");
                             break;
                         }
 //                        else {
@@ -234,10 +231,7 @@ public class RelatorioHorta {
                     else { // caso esteja sem semente
                         //System.out.println("vou regar slot " + j + " ele ja tem " + this.slot_regado[j]);
                         if(this.slot_regado[j] > 3){
-                            pode_incrementar = false;
                             this.slot_regado[j] = 3;
-                            System.out.println("entrei aqui 4");
-                            break;
                         }
                     }
                 }
@@ -256,18 +250,24 @@ public class RelatorioHorta {
                 // verifica se pode regar os slots de acordo com a semente
 
 
-                //System.out.println("vou regar slot " + i + " ele ja tem " + this.slot_regado[i-1]);
+//                System.out.println("vou regar slot " + i + " ele ja tem " + this.slot_regado[i-1]);
 
-                //System.out.println("vou regar semente " + this.semente_slot[i-1]);
+//                System.out.println("vou regar semente " + this.semente_slot[i-1]);
 
-                if (this.slot_regado[i-1] > 2 && (this.semente_slot[i-1].equals("alface") || this.semente_slot[i-1].equals("hortelã") || this.semente_slot[i-1].equals("batata"))) { // Casos específicos para cada semente
-                    System.out.println("entrei aqui");
-                    this.slot_regado[i-1] = 3;
-                    return false;
+                if(this.semente_slot[i-1] != null) {
+                    if (this.slot_regado[i - 1] > 2 && (this.semente_slot[i - 1].equals("alface") || this.semente_slot[i - 1].equals("hortelã") || this.semente_slot[i - 1].equals("batata"))) { // Casos específicos para cada semente
+                        this.slot_regado[i - 1] = 3;
+                        return false;
+                    } else if (this.slot_regado[i - 1] > 3 && (this.semente_slot[i - 1].equals("couve") || this.semente_slot[i - 1].equals("beterraba") || this.semente_slot[i - 1].equals("morango") || this.semente_slot[i - 1].equals("abobora") || this.semente_slot[i - 1].equals("abobrinha"))) {
+                        this.slot_regado[i - 1] = 3;
+                        return false;
+                    }
                 }
-                else if (this.slot_regado[i-1] > 3 && (this.semente_slot[i-1].equals("couve") || this.semente_slot[i-1].equals("beterraba") || this.semente_slot[i-1].equals("morango") || this.semente_slot[i-1].equals("abobora") || this.semente_slot[i-1].equals("abobrinha"))){
-                    this.slot_regado[i-1] = 3;
-                    return false;
+                else{
+                    if(this.slot_regado[i-1] > 3){
+                        this.slot_regado[i-1] = 3;
+                        return false;
+                    }
                 }
             }
         }
@@ -276,11 +276,12 @@ public class RelatorioHorta {
     }
 
     public boolean decrementar_dia(){
-
         boolean pode_decrementar = true;
         for(int i=0; i < QTD_MAX_SLOTS; i ++){
 
             this.slot_regado[i] -= 1;
+
+//            System.out.println("DECREMENTANDO DIA, SEMENTE " + this.semente_slot[i] + " para " + this.slot_regado[i]);
 
             if(this.slot_regado[i] < 0){ // Caso algum slot fique menor do que 0
                 if(this.semente_slot[i] != null){ // se ele tivesse semente, indica que nao podia decrementar
@@ -321,22 +322,36 @@ public class RelatorioHorta {
 
     public void setQtd_dias(int qtd_dias) {
         this.qtd_dias = qtd_dias;
+
+        if ((this.qtd_dias > 1)&&((this.qtd_dias-1) % QTD_DIAS_POR_ESTACAO)==0){ // Se terminou uma estacao
+            vaiProximaEstacao();
+            System.out.println("TO AQUI MUDANDO DE ESTACAO, PARA "+ getEstacao_atual()+ " NO DIA "+ getQtd_dias());
+        }
     }
 
-    public int getQtd_meses() {
-        return qtd_meses;
+
+    public void vaiProximaEstacao(){
+        if(getEstacao_atual().equals("primavera")){
+            setEstacao_atual("verao");
+        }
+        else if(getEstacao_atual().equals("verao")){
+            setEstacao_atual("outono");
+        }
+        else if(getEstacao_atual().equals("outono")){
+            setEstacao_atual("inverno");
+        }
+        else if(getEstacao_atual().equals("inverno")){
+            setEstacao_atual("primavera");
+        }
     }
 
-    public void setQtd_meses(int qtd_meses) {
-        this.qtd_meses = qtd_meses;
-    }
 
     public void addColheita(String planta){
         this.colheita.add(planta);
     }
 
     public void gerarRelatorio(){
-        System.out.println("A horta "+ this.getNome() + ", criada na estacao " +this.getEstacao_base()+ " no local " + this.getLocal() + " teve como resultados:");
+        System.out.println("A horta "+ this.getNome() + ", criada na estacao " +this.getEstacao_base()+ " no local " + this.getLocal() + " obteve pontuacao " + this.getPontuacao() + " e teve como resultados:");
         for (String planta : this.colheita)
             System.out.println("    -   A colheita de " + planta + " foi feita com sucesso!");
     }
@@ -349,4 +364,43 @@ public class RelatorioHorta {
     public void setPerdeu_jogo(boolean perdeu_jogo) {
         this.perdeu_jogo = perdeu_jogo;
     }
+
+    public int getDias_passados() {
+        return dias_passados;
+    }
+
+    public void setDias_passados(int dias_passados) {
+        this.dias_passados = dias_passados;
+    }
+
+    public int getPontuacao() {
+        return pontuacao;
+    }
+
+    public void aumentaPontuacao(int qtd_aumentar) {
+        this.pontuacao += qtd_aumentar;
+    }
+
+    public int getQtd_dias_plantado_slot(int i) {
+        if((i>0) && (i<=QTD_MAX_SLOTS)) {
+            return qtd_dias_plantado_slot[i-1];
+        }
+        else
+            return 0;
+    }
+
+    public void setQtd_dias_plantado_slot(int i, int qtd_dias_plantado_slot) {
+        if((i>0) && (i<=QTD_MAX_SLOTS)) {
+            this.qtd_dias_plantado_slot[i-1] = qtd_dias_plantado_slot;
+        }
+    }
+
+    public void aumentaQtd_dias_plantado_slot(int qtd_aumenta){
+        for(int i=0;i<QTD_MAX_SLOTS;i++){
+            if(this.semente_slot[i]!=null){ // se tiver algo plantado
+                this.qtd_dias_plantado_slot[i] += qtd_aumenta;
+            }
+        }
+    }
+
 }

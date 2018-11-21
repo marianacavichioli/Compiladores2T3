@@ -1,15 +1,7 @@
-//TODO: colocar o preparar solo dentro do corpo tambem, para fazer depois de colher
-
 grammar hort;
 
 IDENT   :  ('a'..'z' | 'A'..'Z' | '_') ('a'..'z' | 'A'..'Z' | '0'..'9' | '_')*;
 NUM_INT : ('-')? '0'..'9' ('0'..'9')*;
-
-MES31 : '1'|'3'|'5'|'7'|'8'|'10'|'12';
-MES30 : '2'|'4'|'6'|'9'|'11';
-
-ANO : ('0'..'9')('0'..'9')('0'..'9')('0'..'9');
-
 
 WS	:	(' ' | '\t' | '\r' | '\n') -> skip;
 ERROCHAR:.;
@@ -18,11 +10,12 @@ horta: 'Horta' IDENT ':' declaracoes  corpo 'Fim horta' ;
 
 estacao : 'verao' | 'primavera' | 'inverno' | 'outono';
 
-
-
 semente : 'hortelã' | 'alface' | 'abobora' | 'abobrinha' | 'couve'| 'beterraba' | 'batata'| 'morango' ;
+
 intensidade : 'pouco' | 'muito';
-op_data : 'Dia' | 'Mês' | 'Ano' ;
+
+op_data : 'Dia' ;
+
 slot: 'slot1'| 'slot2'| 'slot3' | 'slot4' | 'todos';
 
 declaracoes : 'Estacao' ':' estacao  'Local' ':' local=IDENT ;

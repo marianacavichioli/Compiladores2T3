@@ -1,6 +1,6 @@
 Horta legal:
     Estacao: outono
-    Local: ensolarado
+    Local: Campinas
 
     Preparar solo :
         Capinar todos
@@ -10,5 +10,7 @@ Horta legal:
         Plantar alface slot1
         Regar pouco slot1
     Dia 2 :
+        Regar pouco slot1
+    Dia 3:
         Colher slot1
 Fim horta

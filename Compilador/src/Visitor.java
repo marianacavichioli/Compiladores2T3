@@ -1,16 +1,9 @@
+import com.apple.eawt.AppEvent;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 
-//TODO: acho que nao tem nada feito sobre ano ainda
-
-//TODO: nao tem nada feito sobre o local que foi plantado, msa acho que podemos descosiderar isso
-
-//colocar onde decremente o regado do solo as verificacoes de cada semente - já fiz
-
-//TODO: exemplo do solo seco (3 - erro semantico), mostra um problema na recuperacao de erro.
-
-//exemplo pula dia (4 - erro semantico), precisa verificar quantos dias passou depois daquilo, para diminuir o regado daquela quantidade - já fiz
+//TODO: ARRUMAR TODOS OS EXEMPLOS
 
 public class Visitor extends hortBaseVisitor {
 
@@ -49,26 +42,23 @@ public class Visitor extends hortBaseVisitor {
     @Override
     public Object visitCmd(hortParser.CmdContext context){
 
+
+        acoes_decrementa_dia(context.getStart().getLine());
+
         super.visitCmd(context);
 
-//        System.out.println("slot1 regado " + rh.getSlot_regado(0) + " plantado " + rh.getSemente_slot(0));
-//        System.out.println("slot2 regado " + rh.getSlot_regado(1) + " plantado " + rh.getSemente_slot(1));
-//        System.out.println("slot3 regado " + rh.getSlot_regado(2) + " plantado " + rh.getSemente_slot(2));
-//        System.out.println("slot4 regado " + rh.getSlot_regado(3) + " plantado " + rh.getSemente_slot(3));
-//
-//        System.out.println("dias passados " + rh.getDias_passados());
+        return null;
+    }
 
+    private void acoes_decrementa_dia(int line) {
         for (int i = rh.getDias_passados(); i > 0; i--){
-            //System.out.println("entrei for");
+            rh.aumentaQtd_dias_plantado_slot(1);
 
             if (!rh.decrementar_dia()) {
-                System.out.println("Linha " + context.getStart().getLine() + ": solo seco para a semente plantada");
+                System.out.println("Linha " + line + ": solo seco para a semente plantada");
                 rh.setPerdeu_jogo(true);
             }
-//            else
-//               System.out.println("decrementei dia");
         }
-        return null;
     }
 
     @Override
@@ -93,6 +83,7 @@ public class Visitor extends hortBaseVisitor {
 
     @Override
     public Object visitAcao_adubar(hortParser.Acao_adubarContext context) {
+
         String slot = context.slot().getText();
 
         int n;
@@ -113,16 +104,12 @@ public class Visitor extends hortBaseVisitor {
             rh.setPerdeu_jogo(true);
         }
 
-
-
         super.visitAcao_adubar(context);
         return null;
     }
 
-    //TODO considerar a primeira regada na preparação do solo como inicialização, não considerar no contador (q??)
     @Override
     public Object visitAcao_regar(hortParser.Acao_regarContext context) {
-        //System.out.println("vou regar");
         String slot = context.slot().getText();
         int n;
 
@@ -166,19 +153,16 @@ public class Visitor extends hortBaseVisitor {
         return null;
     }
 
-    //TODO isso aqui por equanto ta tratando so dias, depois tem que fazer pra mes e ano. Precisa resolver problema do loop antes
-
     @Override
     public Object visitPeriodo_tempo(hortParser.Periodo_tempoContext context) {
 
-        //System.out.println("Dia: " + rh.getQtd_dias());
+        System.out.println("Dia: " + rh.getQtd_dias());
 
         rh.setDias_passados(0);
 
         if (rh.getQtd_dias() < Integer.parseInt(context.NUM_INT().getText())) { // Verificando se nao ta voltando no tempo
-            //System.out.println("Dia: " + rh.getQtd_dias());
             if (!context.op_data().getText().equals("Dia")) {
-                System.out.println("Linha " + context.getStart().getLine() + ": data inválida");
+                System.out.println("Linha " + context.getStart().getLine() + ": data invalida");
                 rh.setPerdeu_jogo(true);
             } else {
 
@@ -189,12 +173,18 @@ public class Visitor extends hortBaseVisitor {
                 //System.out.println("Dias passados: " + rh.getDias_passados());
 
                 rh.setQtd_dias(Integer.parseInt(context.NUM_INT().getText()));
+                //System.out.println("Dia: " + rh.getQtd_dias());
 
             }
         }
+        else{
+            System.out.println("Linha " + context.getStart().getLine() + ": nao é permitido voltar no tempo");
+            rh.setPerdeu_jogo(true);
+        }
+
+
 
         super.visitPeriodo_tempo(context);
-
         return null;
     }
 
@@ -242,8 +232,14 @@ public class Visitor extends hortBaseVisitor {
                     rh.setSemente_slot(context.semente().getText(), n);
                 else if((verao) && (abobrinha))
                     rh.setSemente_slot(context.semente().getText(), n);
-                else
+                else {
                     System.out.println("Linha " + context.getStart().getLine() + ": a semente " + context.semente().getText() + " não pode ser plantada na estação " + rh.getEstacao_atual());
+                    rh.setPerdeu_jogo(true);
+
+                    // recuperacao de erro
+                    rh.setSemente_slot(context.semente().getText(), n);
+                }
+
             } else {
                 System.out.println("Linha " + context.getStart().getLine() + ": ja existe semente plantada no slot " + context.slot().getText());
                 rh.setPerdeu_jogo(true);
@@ -268,7 +264,9 @@ public class Visitor extends hortBaseVisitor {
 
         String slot = context.slot().getText();
         String semente; // indica a semente do slot em questao
-        int n, qtd_repetir_colher, indice = 0;
+        int n, qtd_repetir_colher;
+        int indice = 0;
+        boolean tarde_demais = false;
 
         if (slot.equals("todos")) {
             n = 0;
@@ -287,59 +285,126 @@ public class Visitor extends hortBaseVisitor {
 
                 semente = rh.getSemente_slot(indice);
 
-                //TODO pensar quanto tempo depois do tempo certo da colheita é possível colher sem a planta ter morrido
-
-                if (semente.equals("alface") && rh.getQtd_dias() >= 2) { //45 dias
-                    rh.setSemente_slot(null, indice);
-                    rh.setSlot_adubado(n, false);
-                    rh.setSlot_capinado(n, false);
-                    rh.setSlot_regado(n, 0);
-                    rh.addColheita("alface");
-                }else if(semente.equals("hortelã") && (rh.getQtd_dias() >= 30 | rh.getQtd_meses() == 1)){ //7 meses
-                    rh.setSemente_slot(null, indice);
-                    rh.setSlot_adubado(n, false);
-                    rh.setSlot_capinado(n, false);
-                    rh.setSlot_regado(n, 0);
-                    rh.addColheita("hortelã");
-                }else if(semente.equals("abobora") && (rh.getQtd_dias() >= 90 | rh.getQtd_meses() == 2)){ //5 meses
-                    rh.setSemente_slot(null, indice);
-                    rh.setSlot_adubado(n, false);
-                    rh.setSlot_capinado(n, false);
-                    rh.setSlot_regado(n, 0);
-                    rh.addColheita("abobora");
-                }else if(semente.equals("abobrinha") && rh.getQtd_dias() >= 10){ //50 dias
-                    rh.setSemente_slot(null, indice);
-                    rh.setSlot_adubado(n, false);
-                    rh.setSlot_capinado(n, false);
-                    rh.setSlot_regado(n, 0);
-                    rh.addColheita("abobrinha");
-                }else if(semente.equals("couve") && rh.getQtd_dias() >= 10){ //50 dias
-                    rh.setSemente_slot(null, indice);
-                    rh.setSlot_adubado(n, false);
-                    rh.setSlot_capinado(n, false);
-                    rh.setSlot_regado(n, 0);
-                    rh.addColheita("couve");
-                }else if(semente.equals("beterraba") && rh.getQtd_dias() >= 5){ //70 dias
-                    rh.setSemente_slot(null, indice);
-                    rh.setSlot_adubado(n, false);
-                    rh.setSlot_capinado(n, false);
-                    rh.setSlot_regado(n, 0);
-                    rh.addColheita("beterraba");
-                }else if(semente.equals("batata") && (rh.getQtd_dias() >= 90 | rh.getQtd_meses() == 2)){ //90 dias
-                    rh.setSemente_slot(null, indice);
-                    rh.setSlot_adubado(n, false);
-                    rh.setSlot_capinado(n, false);
-                    rh.setSlot_regado(n, 0);
-                    rh.addColheita("batata");
-                }else if(semente.equals("morango") && rh.getQtd_dias() >= 7){ //80 dias
-                    rh.setSemente_slot(null, indice);
-                    rh.setSlot_adubado(n, false);
-                    rh.setSlot_capinado(n, false);
-                    rh.setSlot_regado(n, 0);
-                    rh.addColheita("morango");
+                if (semente.equals("alface") && (rh.getQtd_dias_plantado_slot(indice) >= 2)) {
+                    if(rh.getQtd_dias_plantado_slot(indice)<=3){ // Se nao for tarde demais.. chance de 1 dia a mais
+                        rh.setSemente_slot(null, indice);
+                        rh.setSlot_adubado(n, false);
+                        rh.setSlot_capinado(n, false);
+                        rh.setSlot_regado(n, 0);
+                        rh.aumentaPontuacao(2);
+                        rh.setQtd_dias_plantado_slot(indice,0);
+                        rh.addColheita("alface");
+                    }
+                    else{
+                        tarde_demais = true;
+                    }
+                }else if(semente.equals("hortelã") && (rh.getQtd_dias_plantado_slot(indice) >= 15) ){
+                    if(rh.getQtd_dias_plantado_slot(indice)<=16) { // Se nao for tarde demais.. chance de 1 dia a mais
+                        rh.setSemente_slot(null, indice);
+                        rh.setSlot_adubado(n, false);
+                        rh.setSlot_capinado(n, false);
+                        rh.setSlot_regado(n, 0);
+                        rh.aumentaPontuacao(15);
+                        rh.setQtd_dias_plantado_slot(indice,0);
+                        rh.addColheita("hortelã");
+                    }
+                    else{
+                        tarde_demais = true;
+                    }
+                }else if(semente.equals("abobora") && (rh.getQtd_dias_plantado_slot(indice) >= 25)){
+                    if(rh.getQtd_dias_plantado_slot(indice)<=26) { // Se nao for tarde demais.. chance de 1 dia a mais
+                        rh.setSemente_slot(null, indice);
+                        rh.setSlot_adubado(n, false);
+                        rh.setSlot_capinado(n, false);
+                        rh.setSlot_regado(n, 0);
+                        rh.aumentaPontuacao(25);
+                        rh.setQtd_dias_plantado_slot(indice,0);
+                        rh.addColheita("abobora");
+                    }
+                    else{
+                        tarde_demais = true;
+                    }
+                }else if(semente.equals("abobrinha") && rh.getQtd_dias_plantado_slot(indice) >= 10){
+                    if(rh.getQtd_dias_plantado_slot(indice)<=11) { // Se nao for tarde demais.. chance de 1 dia a mais
+                        rh.setSemente_slot(null, indice);
+                        rh.setSlot_adubado(n, false);
+                        rh.setSlot_capinado(n, false);
+                        rh.setSlot_regado(n, 0);
+                        rh.aumentaPontuacao(10);
+                        rh.setQtd_dias_plantado_slot(indice,0);
+                        rh.addColheita("abobrinha");
+                    }
+                    else{
+                        tarde_demais = true;
+                    }
+                }else if(semente.equals("couve") && rh.getQtd_dias_plantado_slot(indice) >= 13){
+                    if(rh.getQtd_dias_plantado_slot(indice)<=14) { // Se nao for tarde demais.. chance de 1 dia a mais
+                        rh.setSemente_slot(null, indice);
+                        rh.setSlot_adubado(n, false);
+                        rh.setSlot_capinado(n, false);
+                        rh.setSlot_regado(n, 0);
+                        rh.aumentaPontuacao(13);
+                        rh.setQtd_dias_plantado_slot(indice,0);
+                        rh.addColheita("couve");
+                    }
+                    else{
+                        tarde_demais = true;
+                    }
+                }else if(semente.equals("beterraba") && rh.getQtd_dias_plantado_slot(indice) >= 5){
+                    if(rh.getQtd_dias_plantado_slot(indice)<=6) { // Se nao for tarde demais.. chance de 1 dia a mais
+                        rh.setSemente_slot(null, indice);
+                        rh.setSlot_adubado(n, false);
+                        rh.setSlot_capinado(n, false);
+                        rh.setSlot_regado(n, 0);
+                        rh.aumentaPontuacao(5);
+                        rh.setQtd_dias_plantado_slot(indice,0);
+                        rh.addColheita("beterraba");
+                    }
+                    else{
+                        tarde_demais = true;
+                    }
+                }else if(semente.equals("batata") && (rh.getQtd_dias_plantado_slot(indice) >= 20 )){
+                    if(rh.getQtd_dias_plantado_slot(indice)<=21) { // Se nao for tarde demais.. chance de 1 dia a mais
+                        rh.setSemente_slot(null, indice);
+                        rh.setSlot_adubado(n, false);
+                        rh.setSlot_capinado(n, false);
+                        rh.setSlot_regado(n, 0);
+                        rh.aumentaPontuacao(20);
+                        rh.setQtd_dias_plantado_slot(indice,0);
+                        rh.addColheita("batata");
+                    }
+                    else{
+                        tarde_demais = true;
+                    }
+                }else if(semente.equals("morango") && rh.getQtd_dias_plantado_slot(indice) >= 7){
+                    if(rh.getQtd_dias_plantado_slot(indice)<=8) { // Se nao for tarde demais.. chance de 1 dia a mais
+                        rh.setSemente_slot(null, indice);
+                        rh.setSlot_adubado(n, false);
+                        rh.setSlot_capinado(n, false);
+                        rh.setSlot_regado(n, 0);
+                        rh.aumentaPontuacao(7);
+                        rh.setQtd_dias_plantado_slot(indice,0);
+                        rh.addColheita("morango");
+                    }
+                    else{
+                        tarde_demais = true;
+                    }
                 }else {
                     System.out.println("Linha " + context.getStart().getLine() + ": a semente " + rh.getSemente_slot(n) + " nao estava pronta para ser colhida");
                     rh.setPerdeu_jogo(true);
+                }
+
+                if (tarde_demais){
+                    System.out.println("Linha " + context.getStart().getLine() + ": a semente " + rh.getSemente_slot(n) + " demorou muito para ser colhida e estragou");
+                    rh.setPerdeu_jogo(true);
+
+                    // Recuperacao de erro
+                    rh.setSemente_slot(null, indice);
+                    rh.setSlot_adubado(n, false);
+                    rh.setSlot_capinado(n, false);
+                    rh.setSlot_regado(n, 0);
+                    rh.setQtd_dias_plantado_slot(indice,0);
+
                 }
             }
         } else {
@@ -355,20 +420,29 @@ public class Visitor extends hortBaseVisitor {
 
     @Override
     public Object visitCmdPara(hortParser.CmdParaContext context){
-        System.out.println("to no para");
+//        System.out.println("to no para");
         int inicio = Integer.parseInt(context.inicio.getText());
         int fim = Integer.parseInt(context.fim.getText());
 
         if (context.op_data().getText().equals("Dia")){ // se o para for percorrer entre os dias
-            for(int i=inicio;i<fim;i++){
-                System.out.println("preciso chamar acao para o dia " + i);
-                for(hortParser.AcaoContext acao: context.acao()) {
-                    visitAcao(acao);
+            if (rh.getQtd_dias() < inicio) { // Verificando se nao ta voltando no tempo
+                for (int i = inicio; i <= fim; i++) {
+//                    System.out.println("preciso chamar acao para o dia " + i);
+
+                    rh.setDias_passados(i - rh.getQtd_dias());
+                    rh.setQtd_dias(i);
+
+                    for (hortParser.AcaoContext acao : context.acao()) {
+                        visitAcao(acao);
+                    }
+                    acoes_decrementa_dia(context.getStart().getLine());
                 }
-                //TODO: tambem colocar que foi passando os dias -> decrementar o regado daquela quantidade.. nao ter conflito com o decremento do solo no dia normal
+            }
+            else{
+                System.out.println("Linha " + context.getStart().getLine() + ": nao é permitido voltar no tempo");
+                rh.setPerdeu_jogo(true);
             }
         }
-        //TODO: ainda tem que tratar o caso de ser mes ou ano (depois de resolver problema do loop)
 
         super.visitCmdPara(context);
         return null;

@@ -1,23 +1,26 @@
-Horta boa:
+Horta Animacao:
     Estacao: outono
-    Local: ensolarado
+    Local: Bauru
 
     Preparar solo :
         Capinar todos
         Adubar todos
         Regar pouco todos
     Dia 1:
-    	Regar pouco todos
     	Plantar alface slot1
+        Regar pouco todos
     Dia 2:
-    	Colher slot1
+        Regar pouco slot1
     Dia 3:
+    	Colher slot1
+    Dia 4:
     	Capinar slot1
     	Adubar slot1
     	Regar muito slot1
     	Plantar alface slot1
-    Dia 4:
+    Dia 5:
+        Regar pouco slot1
+    Dia 6:
     	Colher slot1
-
 
 Fim horta
