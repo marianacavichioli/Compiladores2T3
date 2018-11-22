@@ -6,7 +6,7 @@ public class RelatorioHorta {
 
     final int QTD_MAX_SLOTS = 4;
 
-    int QTD_DIAS_POR_ESTACAO = 15;
+    int QTD_DIAS_POR_ESTACAO = 30;
 
     private String nome, estacao_base, estacao_atual, local;
     private String semente_slot[] = new String[QTD_MAX_SLOTS]; // lembrar sempre que se receber slot 1, é o indice 0 (isso é tratado em todos os métodos)

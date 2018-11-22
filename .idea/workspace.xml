@@ -23,7 +23,33 @@
     </option>
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf>
+      <file leaf-file-name="Visitor.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Compilador/src/Visitor.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="520">
+              <caret line="433" column="1" selection-start-line="433" selection-start-column="1" selection-end-line="433" selection-end-column="1" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RelatorioHorta.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Compilador/src/RelatorioHorta.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="240">
+              <caret line="16" column="38" selection-start-line="16" selection-start-column="38" selection-end-line="16" selection-end-column="38" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1021#1029#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
@@ -73,8 +99,8 @@
         <option value="$PROJECT_DIR$/Compilador/src/Compilador.java" />
         <option value="$PROJECT_DIR$/Compilador/src/hortBaseVisitor.java" />
         <option value="$PROJECT_DIR$/Compilador/src/hort.g4" />
-        <option value="$PROJECT_DIR$/Compilador/src/RelatorioHorta.java" />
         <option value="$PROJECT_DIR$/Compilador/src/Visitor.java" />
+        <option value="$PROJECT_DIR$/Compilador/src/RelatorioHorta.java" />
       </list>
     </option>
   </component>
@@ -97,8 +123,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -115,6 +139,8 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="AndroidView" />
     </panes>
   </component>
@@ -205,14 +231,16 @@
       <workItem from="1542818601774" duration="427000" />
       <workItem from="1542823805560" duration="19511000" />
       <workItem from="1542846614414" duration="415000" />
+      <workItem from="1542848451135" duration="236000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="38433000" />
+    <option name="totallyTimeSpent" value="38669000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="777" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="Tool Output" order="7" />
@@ -236,7 +264,7 @@
       <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="CheckStyle" order="7" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32876712" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17124394" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1736672" />
       <window_info anchor="right" id="Theme Preview" order="3" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -277,7 +305,7 @@
           <caret line="305" column="38" selection-start-line="305" selection-start-column="38" selection-end-line="305" selection-end-column="38" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1023#1031#0" expanded="true" />
+            <element signature="e#1021#1029#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -295,7 +323,7 @@
           <caret line="1" column="22" selection-start-line="1" selection-start-column="22" selection-end-line="1" selection-end-column="22" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1023#1031#0" expanded="true" />
+            <element signature="e#1021#1029#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -461,31 +489,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Compilador/src/RelatorioHorta.java">
+    <entry file="file://$PROJECT_DIR$/Compilador/src/hort.g4">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-196">
-          <caret line="332" column="5" selection-start-line="332" selection-start-column="5" selection-end-line="332" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1023#1031#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="345">
+          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Compilador/src/Visitor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="494">
-          <caret line="433" column="1" lean-forward="true" selection-start-line="433" selection-start-column="1" selection-end-line="433" selection-end-column="1" />
+        <state relative-caret-position="520">
+          <caret line="433" column="1" selection-start-line="433" selection-start-column="1" selection-end-line="433" selection-end-column="1" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Compilador/src/hort.g4">
+    <entry file="file://$PROJECT_DIR$/Compilador/src/RelatorioHorta.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
+        <state relative-caret-position="240">
+          <caret line="16" column="38" selection-start-line="16" selection-start-column="38" selection-end-line="16" selection-end-column="38" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1021#1029#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

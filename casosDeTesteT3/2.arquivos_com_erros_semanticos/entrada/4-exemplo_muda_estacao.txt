@@ -11,9 +11,9 @@ Horta legal:
         Regar pouco todos
     Dia 2 :
         Colher slot1
-    Dia 15:
+    Dia 30:
         Regar pouco slot2
-    Dia 16:
+    Dia 31:
         Regar pouco slot2
         Plantar alface slot2
 Fim horta
