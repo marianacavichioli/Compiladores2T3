@@ -2,9 +2,6 @@ import com.apple.eawt.AppEvent;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
-
-//TODO: ARRUMAR TODOS OS EXEMPLOS
-
 public class Visitor extends hortBaseVisitor {
 
     CommonTokenStream cts;
@@ -42,11 +39,9 @@ public class Visitor extends hortBaseVisitor {
     @Override
     public Object visitCmd(hortParser.CmdContext context){
 
-
         acoes_decrementa_dia(context.getStart().getLine());
 
         super.visitCmd(context);
-
         return null;
     }
 
@@ -57,6 +52,7 @@ public class Visitor extends hortBaseVisitor {
             if (!rh.decrementar_dia()) {
                 System.out.println("Linha " + line + ": solo seco para a semente plantada");
                 rh.setPerdeu_jogo(true);
+
             }
         }
     }
@@ -125,7 +121,6 @@ public class Visitor extends hortBaseVisitor {
             } else {
                 qtd = 1;
             }
-            //System.out.println("vou regar " + n + " qtd " + qtd);
             if (!rh.incrementaSlot_regado(n, qtd)) {
                 System.out.println("Linha " + context.getStart().getLine() + ": solo encharcado");
                 rh.setPerdeu_jogo(true);
@@ -134,7 +129,6 @@ public class Visitor extends hortBaseVisitor {
             System.out.println("Linha " + context.getStart().getLine() + ": solo nao adubado");
 
             //Recuperacao de erro
-            System.out.println("recuperacao erro");
             rh.setSlot_adubado(n, true);
             rh.setPerdeu_jogo(true);
             int qtd;
@@ -156,8 +150,6 @@ public class Visitor extends hortBaseVisitor {
     @Override
     public Object visitPeriodo_tempo(hortParser.Periodo_tempoContext context) {
 
-        System.out.println("Dia: " + rh.getQtd_dias());
-
         rh.setDias_passados(0);
 
         if (rh.getQtd_dias() < Integer.parseInt(context.NUM_INT().getText())) { // Verificando se nao ta voltando no tempo
@@ -165,16 +157,8 @@ public class Visitor extends hortBaseVisitor {
                 System.out.println("Linha " + context.getStart().getLine() + ": data invalida");
                 rh.setPerdeu_jogo(true);
             } else {
-
-
-                //System.out.println("Dias do texto : " + context.NUM_INT().getText() + " dias no programa " + rh.getQtd_dias());
                 rh.setDias_passados(Integer.parseInt(context.NUM_INT().getText()) - rh.getQtd_dias());
-
-                //System.out.println("Dias passados: " + rh.getDias_passados());
-
                 rh.setQtd_dias(Integer.parseInt(context.NUM_INT().getText()));
-                //System.out.println("Dia: " + rh.getQtd_dias());
-
             }
         }
         else{
@@ -182,16 +166,12 @@ public class Visitor extends hortBaseVisitor {
             rh.setPerdeu_jogo(true);
         }
 
-
-
         super.visitPeriodo_tempo(context);
         return null;
     }
 
     @Override
     public Object visitAcao_plantar(hortParser.Acao_plantarContext context) {
-
-        //System.out.println("entrei plantar");
 
         //variáveis para simplificar o código
         boolean primavera = rh.getEstacao_atual().equals("primavera");
@@ -259,8 +239,6 @@ public class Visitor extends hortBaseVisitor {
 
     @Override
     public Object visitAcao_colher(hortParser.Acao_colherContext context) {
-
-        //System.out.println("entrei colher");
 
         String slot = context.slot().getText();
         String semente; // indica a semente do slot em questao
@@ -392,6 +370,13 @@ public class Visitor extends hortBaseVisitor {
                 }else {
                     System.out.println("Linha " + context.getStart().getLine() + ": a semente " + rh.getSemente_slot(n) + " nao estava pronta para ser colhida");
                     rh.setPerdeu_jogo(true);
+
+                    // Recuperacao de erro
+                    rh.setSemente_slot(null, indice);
+                    rh.setSlot_adubado(n, false);
+                    rh.setSlot_capinado(n, false);
+                    rh.setSlot_regado(n, 0);
+                    rh.setQtd_dias_plantado_slot(indice,0);
                 }
 
                 if (tarde_demais){
@@ -420,14 +405,12 @@ public class Visitor extends hortBaseVisitor {
 
     @Override
     public Object visitCmdPara(hortParser.CmdParaContext context){
-//        System.out.println("to no para");
         int inicio = Integer.parseInt(context.inicio.getText());
         int fim = Integer.parseInt(context.fim.getText());
 
         if (context.op_data().getText().equals("Dia")){ // se o para for percorrer entre os dias
             if (rh.getQtd_dias() < inicio) { // Verificando se nao ta voltando no tempo
                 for (int i = inicio; i <= fim; i++) {
-//                    System.out.println("preciso chamar acao para o dia " + i);
 
                     rh.setDias_passados(i - rh.getQtd_dias());
                     rh.setQtd_dias(i);

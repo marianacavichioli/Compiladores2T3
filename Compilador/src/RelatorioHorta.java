@@ -11,8 +11,6 @@ public class RelatorioHorta {
     private String nome, estacao_base, estacao_atual, local;
     private String semente_slot[] = new String[QTD_MAX_SLOTS]; // lembrar sempre que se receber slot 1, é o indice 0 (isso é tratado em todos os métodos)
 
-
-
     private int qtd_dias_plantado_slot[] = new int[QTD_MAX_SLOTS]; // Indica quantos dias se passaram desde que foi plantado em cada slot
 
     private int pontuacao;
@@ -208,8 +206,6 @@ public class RelatorioHorta {
 
                     if (this.semente_slot[j] != null) { // caso o slot ja tenha sido plantado
 
-                        //System.out.println("vou regar slot " + j + " ele ja tem " + this.slot_regado[j]);
-
                         // verifica se pode regar os slots de acordo com a semente
 
                         if (this.slot_regado[j] > 2 && (this.semente_slot[j].equals("alface") || this.semente_slot[j].equals("hortelã") || this.semente_slot[j].equals("batata"))) { // Casos específicos para cada semente
@@ -221,15 +217,8 @@ public class RelatorioHorta {
                             this.slot_regado[j] = 2;
                             break;
                         }
-//                        else {
-//                            pode_incrementar = false;
-//                            this.slot_regado[j] = 3;
-//                            System.out.println("entrei aqui 3 " + this.semente_slot[j]);
-//                            break;
-//                        }
                     }
                     else { // caso esteja sem semente
-                        //System.out.println("vou regar slot " + j + " ele ja tem " + this.slot_regado[j]);
                         if(this.slot_regado[j] > 3){
                             this.slot_regado[j] = 3;
                         }
@@ -239,7 +228,6 @@ public class RelatorioHorta {
             }
             else { // caso em que foi pedido um slot especifico
 
-
                 if (this.slot_regado[i-1] == 0){ // caso o slot nao tenha sido regado ainda
                     this.slot_regado[i-1] += qtd;
                     return true;
@@ -248,12 +236,6 @@ public class RelatorioHorta {
                 this.slot_regado[i-1] += qtd;
 
                 // verifica se pode regar os slots de acordo com a semente
-
-
-//                System.out.println("vou regar slot " + i + " ele ja tem " + this.slot_regado[i-1]);
-
-//                System.out.println("vou regar semente " + this.semente_slot[i-1]);
-
                 if(this.semente_slot[i-1] != null) {
                     if (this.slot_regado[i - 1] > 2 && (this.semente_slot[i - 1].equals("alface") || this.semente_slot[i - 1].equals("hortelã") || this.semente_slot[i - 1].equals("batata"))) { // Casos específicos para cada semente
                         this.slot_regado[i - 1] = 3;
@@ -271,7 +253,6 @@ public class RelatorioHorta {
                 }
             }
         }
-        //System.out.println("entrei aqui");
         return true;
     }
 
@@ -281,11 +262,12 @@ public class RelatorioHorta {
 
             this.slot_regado[i] -= 1;
 
-//            System.out.println("DECREMENTANDO DIA, SEMENTE " + this.semente_slot[i] + " para " + this.slot_regado[i]);
-
             if(this.slot_regado[i] < 0){ // Caso algum slot fique menor do que 0
                 if(this.semente_slot[i] != null){ // se ele tivesse semente, indica que nao podia decrementar
                     pode_decrementar = false;
+
+                    // Recuperacao de erro
+                    incrementaSlot_regado(i,1);
                 }
                 else{ // se ele nao tem nada plantado, zera o regado
                     this.slot_regado[i] = 0;
@@ -299,6 +281,9 @@ public class RelatorioHorta {
                             Objects.equals(this.semente_slot[i], "batata"))){
 
                 pode_decrementar = false;
+
+                // Recuperacao de erro
+                incrementaSlot_regado(i,1);
             }
 
             //Sementes que necessitam de solo sempre úmido = 2.
@@ -310,6 +295,9 @@ public class RelatorioHorta {
                             Objects.equals(this.semente_slot[i], "abobrinha"))){
 
                 pode_decrementar = false;
+
+                // Recuperacao de erro
+                incrementaSlot_regado(i,1);
             }
         }
         return pode_decrementar;
@@ -325,7 +313,6 @@ public class RelatorioHorta {
 
         if ((this.qtd_dias > 1)&&((this.qtd_dias-1) % QTD_DIAS_POR_ESTACAO)==0){ // Se terminou uma estacao
             vaiProximaEstacao();
-            System.out.println("TO AQUI MUDANDO DE ESTACAO, PARA "+ getEstacao_atual()+ " NO DIA "+ getQtd_dias());
         }
     }
 
@@ -344,7 +331,6 @@ public class RelatorioHorta {
             setEstacao_atual("primavera");
         }
     }
-
 
     public void addColheita(String planta){
         this.colheita.add(planta);
